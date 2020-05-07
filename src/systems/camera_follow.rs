@@ -8,7 +8,7 @@ use amethyst::{
 
 use crate::{
   components::{ActiveCamera, PlayerActor},
-  utils::lerp_axis,
+  utils::lerp,
 };
 
 const CAMERA_MOVE_THRESHOLD: f32 = 128.0;
@@ -37,14 +37,10 @@ impl<'s> System<'s> for CameraFollowSystem {
           let player_translation = player_transform.translation();
           let camera_translation = transform.translation().clone();
           transform.set_translation(Vector3::new(
-            if camera_translation.x < player_translation.x - CAMERA_MOVE_THRESHOLD {
-              lerp_axis(
-                camera_translation.x,
-                player_translation.x,
-                CAMERA_MOVE_SPEED,
-              )
-            } else if camera_translation.x > player_translation.x + CAMERA_MOVE_THRESHOLD {
-              lerp_axis(
+            if camera_translation.x < player_translation.x - CAMERA_MOVE_THRESHOLD
+              || camera_translation.x > player_translation.x + CAMERA_MOVE_THRESHOLD
+            {
+              lerp(
                 camera_translation.x,
                 player_translation.x,
                 CAMERA_MOVE_SPEED,
@@ -52,14 +48,10 @@ impl<'s> System<'s> for CameraFollowSystem {
             } else {
               camera_translation.x
             },
-            if camera_translation.y < player_translation.y - CAMERA_MOVE_THRESHOLD {
-              lerp_axis(
-                camera_translation.y,
-                player_translation.y + (active_camera.bounds.y * 0.25),
-                CAMERA_MOVE_SPEED,
-              )
-            } else if camera_translation.y > player_translation.y + CAMERA_MOVE_THRESHOLD {
-              lerp_axis(
+            if camera_translation.y < player_translation.y - CAMERA_MOVE_THRESHOLD
+              || camera_translation.y > player_translation.y + CAMERA_MOVE_THRESHOLD
+            {
+              lerp(
                 camera_translation.y,
                 player_translation.y + (active_camera.bounds.y * 0.25),
                 CAMERA_MOVE_SPEED,
