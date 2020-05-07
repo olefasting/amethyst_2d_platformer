@@ -12,7 +12,7 @@ use crate::{
 };
 
 const CAMERA_MOVE_THRESHOLD: f32 = 128.0;
-const CAMERA_MOVE_SPEED: f32 = 10.0;
+const CAMERA_MOVE_SPEED: f32 = 6.0;
 
 #[derive(SystemDesc)]
 pub struct CameraFollowSystem;
