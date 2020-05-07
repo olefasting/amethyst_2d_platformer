@@ -58,15 +58,15 @@ impl SimpleState for GameplayState {
     );
     animated_sprite.add_animation(
       ACTION_RUN,
-      Animation::new(5, 8, Duration::from_millis(150), true),
+      Animation::new(4, 8, Duration::from_millis(150), true),
     );
     animated_sprite.add_animation(
       ACTION_WALK,
-      Animation::new(35, 8, Duration::from_millis(300), true),
+      Animation::new(34, 8, Duration::from_millis(300), true),
     );
     animated_sprite.add_animation(
       ACTION_JUMP,
-      Animation::new(43, 4, Duration::from_millis(50), false),
+      Animation::new(42, 4, Duration::from_millis(50), false),
     );
     animated_sprite.add_animation(
       ACTION_STAND,
