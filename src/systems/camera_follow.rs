@@ -6,7 +6,13 @@ use amethyst::{
   ecs::{Join, ReadStorage, System, SystemData, WriteStorage},
 };
 
-use crate::components::{ActiveCamera, PlayerActor};
+use crate::{
+  components::{ActiveCamera, PlayerActor},
+  utils::lerp_axis,
+};
+
+const CAMERA_MOVE_THRESHOLD: f32 = 128.0;
+const CAMERA_MOVE_SPEED: f32 = 10.0;
 
 #[derive(SystemDesc)]
 pub struct CameraFollowSystem;
@@ -29,10 +35,39 @@ impl<'s> System<'s> for CameraFollowSystem {
       Some(player_transform) => {
         for (transform, active_camera) in (&mut transforms, &active_cameras).join() {
           let player_translation = player_transform.translation();
+          let camera_translation = transform.translation().clone();
           transform.set_translation(Vector3::new(
-            player_translation.x,
-            player_translation.y + (active_camera.bounds.y * 0.25),
-            1.0,
+            if camera_translation.x < player_translation.x - CAMERA_MOVE_THRESHOLD {
+              lerp_axis(
+                camera_translation.x,
+                player_translation.x,
+                CAMERA_MOVE_SPEED,
+              )
+            } else if camera_translation.x > player_translation.x + CAMERA_MOVE_THRESHOLD {
+              lerp_axis(
+                camera_translation.x,
+                player_translation.x,
+                CAMERA_MOVE_SPEED,
+              )
+            } else {
+              camera_translation.x
+            },
+            if camera_translation.y < player_translation.y - CAMERA_MOVE_THRESHOLD {
+              lerp_axis(
+                camera_translation.y,
+                player_translation.y + (active_camera.bounds.y * 0.25),
+                CAMERA_MOVE_SPEED,
+              )
+            } else if camera_translation.y > player_translation.y + CAMERA_MOVE_THRESHOLD {
+              lerp_axis(
+                camera_translation.y,
+                player_translation.y + (active_camera.bounds.y * 0.25),
+                CAMERA_MOVE_SPEED,
+              )
+            } else {
+              camera_translation.y
+            },
+            transform.translation().z,
           ));
           break;
         }
