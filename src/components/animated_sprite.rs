@@ -11,7 +11,7 @@ use amethyst::{
   renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture},
 };
 
-use crate::{components::actor::actions::*, Animation};
+use crate::Animation;
 
 #[derive(Debug, Clone)]
 pub struct AnimatedSprite {
@@ -32,7 +32,7 @@ impl Default for AnimatedSprite {
     Self {
       sprite_sheet_handle: None,
       animations: HashMap::new(),
-      current_action: ACTION_IDLE,
+      current_action: "",
       last_change: Instant::now(),
     }
   }

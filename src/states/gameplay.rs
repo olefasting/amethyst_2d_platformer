@@ -68,6 +68,10 @@ impl SimpleState for GameplayState {
       ACTION_JUMP,
       Animation::new(43, 4, Duration::from_millis(50), false),
     );
+    animated_sprite.add_animation(
+      ACTION_STAND,
+      Animation::new(63, 1, Duration::from_millis(50), false),
+    );
 
     let mut transform = Transform::default();
     transform.set_translation_xyz(50.0, 300.0, 0.0);
