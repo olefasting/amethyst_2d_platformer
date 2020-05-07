@@ -2,6 +2,7 @@ use std::time::Duration;
 
 use amethyst::{
   assets::{AssetStorage, Handle, Loader},
+  core::math::Vector2,
   core::Transform,
   prelude::*,
   renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture},
@@ -31,6 +32,7 @@ impl SimpleState for GameplayState {
     world.register::<RigidBody>();
     world.register::<Velocity>();
     world.register::<AnimatedSprite>();
+    world.register::<CameraFollow>();
 
     world.insert(WorldGravity(WORLD_GRAVITY));
     world
@@ -120,5 +122,6 @@ fn initialise_camera(world: &mut World) {
     .create_entity()
     .with(Camera::standard_2d(VIEW_WIDTH, VIEW_HEIGHT))
     .with(transform)
+    .with(ActiveCamera::new(Vector2::new(VIEW_WIDTH, VIEW_HEIGHT)))
     .build();
 }

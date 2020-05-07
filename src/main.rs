@@ -71,8 +71,13 @@ fn main() -> amethyst::Result<()> {
                 "physics_system",
                 "player_input_system",
                 "control_system",
-                "control_system",
+                "movement_system",
             ],
+        )
+        .with(
+            CameraFollowSystem,
+            "camera_follow_system",
+            &["physics_system", "player_input_system", "control_system"],
         );
 
     let mut game = Application::new(assets_dir, GameplayState::default(), game_data)?;

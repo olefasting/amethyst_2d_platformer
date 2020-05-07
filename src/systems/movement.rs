@@ -14,9 +14,7 @@ impl<'s> System<'s> for MovementSystem {
 
   fn run(&mut self, (velocities, mut transforms): Self::SystemData) {
     for (velocity, transform) in (&velocities, &mut transforms).join() {
-      transform.prepend_translation_x(velocity.0.x);
-      transform.prepend_translation_y(velocity.0.y);
-      transform.prepend_translation_z(velocity.0.z);
+      transform.prepend_translation(velocity.0);
     }
   }
 }
