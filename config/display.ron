@@ -1,0 +1,4 @@
+(
+  title: "capstone",
+  dimensions: Some((1024, 768)),
+)
