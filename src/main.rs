@@ -56,41 +56,15 @@ fn main() -> amethyst::Result<()> {
             "player_input_system",
             &["input_system"],
         )
-        .with(PhysicsSystem, "physics_system", &[])
-        .with(
-            ControlSystem,
-            "control_system",
-            &["physics_system", "player_input_system"],
-        )
-        .with(
-            CollisionSystem,
-            "collision_system",
-            &["physics_system", "player_input_system", "control_system"],
-        )
-        .with(
-            MovementSystem,
-            "movement_system",
-            &[
-                "physics_system",
-                "player_input_system",
-                "control_system",
-                "collision_system",
-            ],
-        )
-        .with(
-            AnimationSystem,
-            "animation_system",
-            &[
-                "physics_system",
-                "player_input_system",
-                "control_system",
-                "movement_system",
-            ],
-        )
+        .with(ControlSystem, "control_system", &["player_input_system"])
+        .with(CollisionSystem, "collision_system", &["control_system"])
+        .with(PhysicsSystem, "physics_system", &["collision_system"])
+        .with(MovementSystem, "movement_system", &["physics_system"])
+        .with(AnimationSystem, "animation_system", &["movement_system"])
         .with(
             CameraFollowSystem,
             "camera_follow_system",
-            &["physics_system", "player_input_system", "control_system"],
+            &["movement_system"],
         );
 
     let mut game = Application::new(assets_dir, GameplayState::default(), game_data)?;
