@@ -9,7 +9,10 @@ use amethyst::{
   shrev::EventChannel,
 };
 
-use ncollide2d::shape::{Capsule, ShapeHandle};
+use ncollide2d::{
+  math::Vector,
+  shape::{Capsule, Cuboid, ShapeHandle},
+};
 
 use crate::components::actor::actions::*;
 use crate::components::*;
@@ -46,57 +49,9 @@ impl SimpleState for GameplayState {
       EventChannel::<CollisionEvent>::new(),
     ));
 
-    let mut animated_sprite = AnimatedSprite::default();
-    animated_sprite
-      .sprite_sheet_handle
-      .replace(load_sprite_sheet(world));
-
-    initialise_camera(world);
-
-    let sprite_render = SpriteRender {
-      sprite_sheet: animated_sprite.sprite_sheet_handle.clone().unwrap(),
-      sprite_number: 0,
-    };
-
-    let mut animated_sprite = AnimatedSprite::default();
-    animated_sprite.add_animation(
-      ACTION_IDLE,
-      Animation::new(0, 4, Duration::from_millis(300), true),
-    );
-    animated_sprite.add_animation(
-      ACTION_RUN,
-      Animation::new(4, 8, Duration::from_millis(150), true),
-    );
-    animated_sprite.add_animation(
-      ACTION_WALK,
-      Animation::new(34, 8, Duration::from_millis(300), true),
-    );
-    animated_sprite.add_animation(
-      ACTION_JUMP,
-      Animation::new(42, 4, Duration::from_millis(50), false),
-    );
-    animated_sprite.add_animation(
-      ACTION_STAND,
-      Animation::new(63, 1, Duration::from_millis(50), false),
-    );
-
-    let mut transform = Transform::default();
-    transform.set_translation_xyz(50.0, 300.0, 0.0);
-
-    let collider_shape = Capsule::new(2.0, 0.25);
-
-    world
-      .create_entity()
-      .with(transform)
-      .with(sprite_render)
-      .with(animated_sprite)
-      .with(ActorData::default())
-      .with(PlayerActor)
-      .with(PhysicsBody::default())
-      .with(Velocity::default())
-      .with(ControlState::default())
-      .with(Collider::new(ShapeHandle::new(collider_shape), false, true))
-      .build();
+    initialize_camera(world);
+    initialize_player(world);
+    initialize_ground(world);
 
     println!("Starting game!");
   }
@@ -106,12 +61,12 @@ impl SimpleState for GameplayState {
   }
 }
 
-fn load_sprite_sheet(world: &mut World) -> Handle<SpriteSheet> {
+fn load_sprite_sheet(world: &mut World, name: &str, ext: &str) -> Handle<SpriteSheet> {
   let texture_handle = {
     let loader = world.read_resource::<Loader>();
     let texture_storage = world.read_resource::<AssetStorage<Texture>>();
     loader.load(
-      "textures/spritesheet.png",
+      format!("textures/{}.{}", name, ext),
       ImageFormat::default(),
       (),
       &texture_storage,
@@ -121,16 +76,16 @@ fn load_sprite_sheet(world: &mut World) -> Handle<SpriteSheet> {
   let loader = world.read_resource::<Loader>();
   let sprite_sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
   loader.load(
-    "textures/spritesheet.ron",
+    format!("textures/{}.ron", name),
     SpriteSheetFormat(texture_handle),
     (),
     &sprite_sheet_store,
   )
 }
 
-fn initialise_camera(world: &mut World) {
+fn initialize_camera(world: &mut World) {
   let mut transform = Transform::default();
-  transform.set_translation_xyz(VIEW_WIDTH * 0.5, VIEW_HEIGHT * 0.5, 1.0);
+  transform.set_translation_xyz(50.0, 1500.0, 1.0);
 
   world
     .create_entity()
@@ -138,4 +93,77 @@ fn initialise_camera(world: &mut World) {
     .with(transform)
     .with(ActiveCamera::new(Vector2::new(VIEW_WIDTH, VIEW_HEIGHT)))
     .build();
+}
+
+fn initialize_player(world: &mut World) {
+  let mut animated_sprite = AnimatedSprite::default();
+  animated_sprite
+    .sprite_sheet_handle
+    .replace(load_sprite_sheet(world, "player", "png"));
+
+  let sprite_render = SpriteRender {
+    sprite_sheet: animated_sprite.sprite_sheet_handle.clone().unwrap(),
+    sprite_number: 0,
+  };
+
+  let mut animated_sprite = AnimatedSprite::default();
+  animated_sprite.add_animation(
+    ACTION_IDLE,
+    Animation::new(0, 4, Duration::from_millis(300), true),
+  );
+  animated_sprite.add_animation(
+    ACTION_RUN,
+    Animation::new(4, 8, Duration::from_millis(150), true),
+  );
+  animated_sprite.add_animation(
+    ACTION_WALK,
+    Animation::new(34, 8, Duration::from_millis(300), true),
+  );
+  animated_sprite.add_animation(
+    ACTION_JUMP,
+    Animation::new(42, 4, Duration::from_millis(50), false),
+  );
+  animated_sprite.add_animation(
+    ACTION_STAND,
+    Animation::new(63, 1, Duration::from_millis(50), false),
+  );
+
+  let mut transform = Transform::default();
+  transform.set_translation_xyz(50.0, 1500.0, 0.0);
+
+  let shape_handle = ShapeHandle::new(Capsule::new(2.0, 0.25));
+
+  world
+    .create_entity()
+    .with(transform)
+    .with(sprite_render)
+    .with(animated_sprite)
+    .with(ActorData::default())
+    .with(PlayerActor)
+    .with(PhysicsBody::default())
+    .with(Velocity::default())
+    .with(ControlState::default())
+    .with(Collider::new(shape_handle, false, true))
+    .build();
+}
+
+fn initialize_ground(world: &mut World) {
+  let sprite_render = SpriteRender {
+    sprite_sheet: load_sprite_sheet(world, "ground", "png"),
+    sprite_number: 0,
+  };
+
+  for i in 0..50 {
+    let mut transform = Transform::default();
+    transform.set_translation_xyz((i * 32) as f32, 150.0, 0.0);
+
+    let shape_handle = ShapeHandle::new(Cuboid::new(Vector::new(1.0, 1.0)));
+
+    world
+      .create_entity()
+      .with(transform)
+      .with(sprite_render.clone())
+      .with(Collider::new(shape_handle, true, true))
+      .build();
+  }
 }
