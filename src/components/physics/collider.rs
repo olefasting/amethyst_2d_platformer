@@ -1,18 +1,18 @@
 use amethyst::ecs::{Component, VecStorage};
 
-use crate::Rectangle;
+use ncollide2d::shape::ShapeHandle;
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct Collider {
-  pub colliders: Vec<Rectangle>,
+  pub shape: Option<ShapeHandle<f32>>,
   pub is_ground: bool,
   pub debug_draw: bool,
 }
 
 impl Collider {
-  pub fn new(colliders: Vec<Rectangle>, is_ground: bool, debug_draw: bool) -> Self {
+  pub fn new(shape: ShapeHandle<f32>, is_ground: bool, debug_draw: bool) -> Self {
     Self {
-      colliders,
+      shape: Some(shape),
       is_ground,
       debug_draw,
     }
@@ -22,7 +22,7 @@ impl Collider {
 impl Default for Collider {
   fn default() -> Self {
     Self {
-      colliders: Vec::new(),
+      shape: None,
       is_ground: false,
       debug_draw: false,
     }

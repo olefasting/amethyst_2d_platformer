@@ -6,6 +6,7 @@ edition = "2018"
 
 [dependencies]
 amethyst = { git = "https://github.com/amethyst/amethyst", branch = "master" }
+ncollide2d = "0.23.0"
 # num-traits = "0.2"
 
 [features]

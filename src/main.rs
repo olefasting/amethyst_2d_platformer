@@ -11,16 +11,14 @@ use amethyst::{
 };
 
 pub mod animation;
+pub mod collision_event;
 pub mod components;
-pub mod ray;
-pub mod rectangle;
 pub mod resources;
 pub mod states;
 pub mod systems;
 pub mod utils;
 
-use ray::Ray;
-use rectangle::Rectangle;
+use collision_event::{CollisionEvent, CollisionEventChannel};
 
 use animation::*;
 use components::*;

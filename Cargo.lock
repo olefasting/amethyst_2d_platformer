@@ -58,7 +58,7 @@ dependencies = [
 [[package]]
 name = "amethyst"
 version = "0.15.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "amethyst_animation",
  "amethyst_assets",
@@ -94,7 +94,7 @@ dependencies = [
 [[package]]
 name = "amethyst_animation"
 version = "0.10.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "amethyst_assets",
  "amethyst_core",
@@ -113,7 +113,7 @@ dependencies = [
 [[package]]
 name = "amethyst_assets"
 version = "0.11.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "amethyst_core",
  "amethyst_derive",
@@ -137,7 +137,7 @@ dependencies = [
 [[package]]
 name = "amethyst_audio"
 version = "0.10.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "amethyst_assets",
  "amethyst_core",
@@ -153,7 +153,7 @@ dependencies = [
 [[package]]
 name = "amethyst_config"
 version = "0.14.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "log",
  "ron",
@@ -163,7 +163,7 @@ dependencies = [
 [[package]]
 name = "amethyst_controls"
 version = "0.9.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "amethyst_assets",
  "amethyst_core",
@@ -179,7 +179,7 @@ dependencies = [
 [[package]]
 name = "amethyst_core"
 version = "0.10.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "alga",
  "alga_derive",
@@ -190,7 +190,7 @@ dependencies = [
  "fnv",
  "getset",
  "log",
- "nalgebra",
+ "nalgebra 0.19.0",
  "num-traits 0.2.11",
  "rayon",
  "serde",
@@ -201,7 +201,7 @@ dependencies = [
 [[package]]
 name = "amethyst_derive"
 version = "0.8.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "heck",
  "proc-macro-crate",
@@ -214,7 +214,7 @@ dependencies = [
 [[package]]
 name = "amethyst_error"
 version = "0.5.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "backtrace",
 ]
@@ -222,7 +222,7 @@ dependencies = [
 [[package]]
 name = "amethyst_input"
 version = "0.11.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "amethyst_config",
  "amethyst_core",
@@ -239,7 +239,7 @@ dependencies = [
 [[package]]
 name = "amethyst_locale"
 version = "0.9.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "amethyst_assets",
  "amethyst_core",
@@ -252,7 +252,7 @@ dependencies = [
 [[package]]
 name = "amethyst_network"
 version = "0.8.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "amethyst_core",
  "amethyst_error",
@@ -264,7 +264,7 @@ dependencies = [
 [[package]]
 name = "amethyst_rendy"
 version = "0.5.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "amethyst_assets",
  "amethyst_config",
@@ -292,7 +292,7 @@ dependencies = [
 [[package]]
 name = "amethyst_ui"
 version = "0.10.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "amethyst_assets",
  "amethyst_audio",
@@ -325,7 +325,7 @@ dependencies = [
 [[package]]
 name = "amethyst_utils"
 version = "0.10.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "amethyst_assets",
  "amethyst_controls",
@@ -344,7 +344,7 @@ dependencies = [
 [[package]]
 name = "amethyst_window"
 version = "0.5.0"
-source = "git+https://github.com/amethyst/amethyst#4f84367a5163ab0177b176cf33629ea2c8ae0d85"
+source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
 dependencies = [
  "amethyst_config",
  "amethyst_core",
@@ -557,6 +557,7 @@ name = "capstone"
 version = "0.1.0"
 dependencies = [
  "amethyst",
+ "ncollide2d",
 ]
 
 [[package]]
@@ -1130,6 +1131,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "fixedbitset"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "37ab347416e802de484e4d03c7316c48f1ecb56574dfd4a46a80f173ce1de04d"
+
+[[package]]
 name = "float-ord"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1508,6 +1515,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "indexmap"
+version = "1.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "076f042c5b7b98f31d205f1249267e12a6518c1481e9dae9764af19b707d2292"
+dependencies = [
+ "autocfg 1.0.0",
+]
+
+[[package]]
 name = "inflate"
 version = "0.4.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1873,6 +1889,43 @@ dependencies = [
 ]
 
 [[package]]
+name = "nalgebra"
+version = "0.21.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d630f146ae751cfb43db9e0ad6bd73819a546a38baa5d4a9de69823c389c78a1"
+dependencies = [
+ "approx 0.3.2",
+ "generic-array",
+ "matrixmultiply",
+ "num-complex",
+ "num-rational",
+ "num-traits 0.2.11",
+ "rand 0.7.3",
+ "rand_distr",
+ "simba",
+ "typenum",
+]
+
+[[package]]
+name = "ncollide2d"
+version = "0.23.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bd8b64a7e59efbd70322f6c560845d86d7c3cb5c396c14e5f58f8c84ad49e78f"
+dependencies = [
+ "approx 0.3.2",
+ "bitflags",
+ "downcast-rs",
+ "either",
+ "nalgebra 0.21.0",
+ "num-traits 0.2.11",
+ "petgraph",
+ "simba",
+ "slab",
+ "slotmap",
+ "smallvec 1.4.0",
+]
+
+[[package]]
 name = "nix"
 version = "0.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2181,6 +2234,16 @@ name = "percent-encoding"
 version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d4fd5641d01c8f18a23da7b6fe29298ff4b55afcccdf78973b24cf3175fee32e"
+
+[[package]]
+name = "petgraph"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "29c127eea4a29ec6c85d153c59dc1213f33ec74cead30fe4730aecc88cc1fd92"
+dependencies = [
+ "fixedbitset",
+ "indexmap",
+]
 
 [[package]]
 name = "phf"
@@ -3193,6 +3256,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b5752e017e03af9d735b4b069f53b7a7fd90fefafa04d8bd0c25581b0bff437f"
 
 [[package]]
+name = "simba"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3d771bffb178827708f83829713e3a214bc8a9879a8f27ca548965bd849ed130"
+dependencies = [
+ "approx 0.3.2",
+ "num-complex",
+ "num-traits 0.2.11",
+ "paste",
+]
+
+[[package]]
 name = "siphasher"
 version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3214,6 +3289,12 @@ dependencies = [
  "mach",
  "winapi",
 ]
+
+[[package]]
+name = "slotmap"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c46a3482db8f247956e464d783693ece164ca056e6e67563ee5505bdb86452cd"
 
 [[package]]
 name = "smallvec"

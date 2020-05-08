@@ -6,7 +6,10 @@ use amethyst::{
   core::Transform,
   prelude::*,
   renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture},
+  shrev::EventChannel,
 };
+
+use ncollide2d::shape::{Capsule, ShapeHandle};
 
 use crate::components::actor::actions::*;
 use crate::components::*;
@@ -14,7 +17,7 @@ use crate::resources::*;
 use crate::states::*;
 use crate::Animation;
 
-use crate::Ray;
+use crate::{CollisionEvent, CollisionEventChannel};
 
 const WORLD_GRAVITY: f32 = 6.0;
 
@@ -36,12 +39,12 @@ impl SimpleState for GameplayState {
     world.register::<AnimatedSprite>();
     world.register::<CameraFollow>();
     world.register::<Collider>();
-    world.register::<RayCaster>();
 
     world.insert(WorldGravity(WORLD_GRAVITY));
-    world
-      .entry::<CurrentState>()
-      .or_insert_with(|| CurrentState(StateId::GameplayState));
+    world.insert(CurrentState(StateId::GameplayState));
+    world.insert(CollisionEventChannel::new(
+      EventChannel::<CollisionEvent>::new(),
+    ));
 
     let mut animated_sprite = AnimatedSprite::default();
     animated_sprite
@@ -80,6 +83,8 @@ impl SimpleState for GameplayState {
     let mut transform = Transform::default();
     transform.set_translation_xyz(50.0, 300.0, 0.0);
 
+    let collider_shape = Capsule::new(2.0, 0.25);
+
     world
       .create_entity()
       .with(transform)
@@ -90,16 +95,7 @@ impl SimpleState for GameplayState {
       .with(PhysicsBody::default())
       .with(Velocity::default())
       .with(ControlState::default())
-      .with(RayCaster::new(
-        vec![
-          Ray::default().with_ray(Vector2::new(0.0, 0.1)),
-          Ray::new(Vector2::new(0.25, 0.0), Vector2::new(0.0, 0.1)),
-          Ray::new(Vector2::new(0.5, 0.0), Vector2::new(0.0, 0.1)),
-          Ray::new(Vector2::new(0.75, 0.0), Vector2::new(0.0, 0.1)),
-          Ray::new(Vector2::new(1.0, 0.0), Vector2::new(0.0, 0.1)),
-        ],
-        true,
-      ))
+      .with(Collider::new(ShapeHandle::new(collider_shape), false, true))
       .build();
 
     println!("Starting game!");

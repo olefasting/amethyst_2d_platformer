@@ -7,6 +7,7 @@ use amethyst::{
 use crate::{
   components::{PhysicsBody, Velocity},
   resources::WorldGravity,
+  CollisionEventChannel,
 };
 
 #[derive(SystemDesc)]
@@ -17,12 +18,13 @@ impl<'s> System<'s> for PhysicsSystem {
     ReadStorage<'s, Transform>,
     WriteStorage<'s, Velocity>,
     WriteStorage<'s, PhysicsBody>,
+    Read<'s, CollisionEventChannel>,
     Read<'s, WorldGravity>,
   );
 
   fn run(
     &mut self,
-    (transforms, mut velocities, mut physics_bodies, world_gravity): Self::SystemData,
+    (transforms, mut velocities, mut physics_bodies, _collision_event_channel, world_gravity): Self::SystemData,
   ) {
     for (transform, velocity, physics_body) in
       (&transforms, &mut velocities, &mut physics_bodies).join()

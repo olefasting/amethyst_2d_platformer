@@ -1,5 +1,3 @@
-use std::time::{Duration, Instant};
-
 use amethyst::{
   core::{math::Vector3, Transform},
   derive::SystemDesc,
