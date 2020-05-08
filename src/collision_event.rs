@@ -1,9 +1,15 @@
-use amethyst::{ecs::world::Index, shrev::EventChannel};
+use amethyst::{ecs::world::Entity, shrev::EventChannel};
 
 #[derive(Debug, Copy, Clone)]
 pub struct CollisionEvent {
-  pub source: Index,
-  pub target: Index,
+  pub source: Entity,
+  pub target: Entity,
+}
+
+impl CollisionEvent {
+  pub fn new(source: Entity, target: Entity) -> Self {
+    Self { source, target }
+  }
 }
 
 #[derive(Debug, Default)]

@@ -85,7 +85,7 @@ fn load_sprite_sheet(world: &mut World, name: &str, ext: &str) -> Handle<SpriteS
 
 fn initialize_camera(world: &mut World) {
   let mut transform = Transform::default();
-  transform.set_translation_xyz(50.0, 1500.0, 1.0);
+  transform.set_translation_xyz(50.0, 500.0, 1.0);
 
   world
     .create_entity()
@@ -129,7 +129,7 @@ fn initialize_player(world: &mut World) {
   );
 
   let mut transform = Transform::default();
-  transform.set_translation_xyz(50.0, 1500.0, 0.0);
+  transform.set_translation_xyz(50.0, 500.0, 0.0);
 
   let shape_handle = ShapeHandle::new(Capsule::new(2.0, 0.25));
 
@@ -143,7 +143,7 @@ fn initialize_player(world: &mut World) {
     .with(PhysicsBody::default())
     .with(Velocity::default())
     .with(ControlState::default())
-    .with(Collider::new(shape_handle, false, true))
+    .with(Collider::new(shape_handle, true))
     .build();
 }
 
@@ -163,7 +163,8 @@ fn initialize_ground(world: &mut World) {
       .create_entity()
       .with(transform)
       .with(sprite_render.clone())
-      .with(Collider::new(shape_handle, true, true))
+      .with(Collider::new(shape_handle, true))
+      .with(Ground)
       .build();
   }
 }
