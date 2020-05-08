@@ -1,4 +1,4 @@
-# capstone
+# amethyst-2d-platformer
 
 2d platformer made in [Amethyst](https://amethyst.rs/), the [Rust](https://www.rust-lang.org/) game engine. The goal of this project is to develop a usable starter project or template for other Amethyst users.  
 

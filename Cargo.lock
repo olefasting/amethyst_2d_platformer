@@ -92,6 +92,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "amethyst-2d-platformer"
+version = "0.1.0"
+dependencies = [
+ "amethyst",
+ "ncollide2d",
+]
+
+[[package]]
 name = "amethyst_animation"
 version = "0.10.0"
 source = "git+https://github.com/amethyst/amethyst#9bb47a876cbebf836ebab8fe01756ba5d1f328f4"
@@ -551,14 +559,6 @@ name = "bytes"
 version = "0.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "130aac562c0dd69c56b3b1cc8ffd2e17be31d0b6c25b61c96b76231aa23e39e1"
-
-[[package]]
-name = "capstone"
-version = "0.1.0"
-dependencies = [
- "amethyst",
- "ncollide2d",
-]
 
 [[package]]
 name = "cc"

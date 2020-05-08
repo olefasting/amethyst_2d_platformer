@@ -1,5 +1,5 @@
 [package]
-name = "capstone"
+name = "amethyst-2d-platformer"
 version = "0.1.0"
 authors = ["Ole A. Sjo Fasting <oasf@polygo.no>"]
 edition = "2018"
@@ -7,7 +7,6 @@ edition = "2018"
 [dependencies]
 amethyst = { git = "https://github.com/amethyst/amethyst", branch = "master" }
 ncollide2d = "0.23.0"
-# num-traits = "0.2"
 
 [features]
 default = ["vulkan"]
