@@ -1,6 +1,6 @@
 [package]
 name = "amethyst-2d-platformer"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["Ole A. Sjo Fasting <oasf@polygo.no>"]
 edition = "2018"
 
