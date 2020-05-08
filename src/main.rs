@@ -12,10 +12,15 @@ use amethyst::{
 
 pub mod animation;
 pub mod components;
+pub mod ray;
+pub mod rectangle;
 pub mod resources;
 pub mod states;
 pub mod systems;
 pub mod utils;
+
+use ray::Ray;
+use rectangle::Rectangle;
 
 use animation::*;
 use components::*;
@@ -60,9 +65,19 @@ fn main() -> amethyst::Result<()> {
             &["physics_system", "player_input_system"],
         )
         .with(
+            CollisionSystem,
+            "collision_system",
+            &["physics_system", "player_input_system", "control_system"],
+        )
+        .with(
             MovementSystem,
             "movement_system",
-            &["physics_system", "player_input_system", "control_system"],
+            &[
+                "physics_system",
+                "player_input_system",
+                "control_system",
+                "collision_system",
+            ],
         )
         .with(
             AnimationSystem,

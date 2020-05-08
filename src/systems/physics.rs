@@ -5,7 +5,7 @@ use amethyst::{
 };
 
 use crate::{
-  components::{RigidBody, Velocity},
+  components::{PhysicsBody, Velocity},
   resources::WorldGravity,
 };
 
@@ -16,39 +16,39 @@ impl<'s> System<'s> for PhysicsSystem {
   type SystemData = (
     ReadStorage<'s, Transform>,
     WriteStorage<'s, Velocity>,
-    WriteStorage<'s, RigidBody>,
+    WriteStorage<'s, PhysicsBody>,
     Read<'s, WorldGravity>,
   );
 
   fn run(
     &mut self,
-    (transforms, mut velocities, mut rigid_bodies, world_gravity): Self::SystemData,
+    (transforms, mut velocities, mut physics_bodies, world_gravity): Self::SystemData,
   ) {
-    for (transform, velocity, rigid_body) in
-      (&transforms, &mut velocities, &mut rigid_bodies).join()
+    for (transform, velocity, physics_body) in
+      (&transforms, &mut velocities, &mut physics_bodies).join()
     {
       // TODO: Check if grounded
-      rigid_body.is_grounded = transform.translation().y <= 150.0;
+      physics_body.is_grounded = transform.translation().y <= 150.0;
 
-      if rigid_body.is_grounded && velocity.0.y < 0.0 {
+      if physics_body.is_grounded && velocity.0.y < 0.0 {
         velocity.0.y = 0.0;
       }
 
-      if rigid_body.use_gravity && !rigid_body.is_grounded {
+      if physics_body.use_gravity && !physics_body.is_grounded {
         velocity.0.y -= world_gravity.0;
       }
 
       if velocity.0.x != 0.0 {
-        if rigid_body.immediate_stop {
+        if physics_body.immediate_stop {
           velocity.0.x = 0.0;
         } else {
           if velocity.0.x > 0.0 {
-            velocity.0.x -= rigid_body.drag;
+            velocity.0.x -= physics_body.drag;
             if velocity.0.x < 0.0 {
               velocity.0.x = 0.0;
             }
           } else {
-            velocity.0.x += rigid_body.drag;
+            velocity.0.x += physics_body.drag;
             if velocity.0.x > 0.0 {
               velocity.0.x = 0.0;
             }

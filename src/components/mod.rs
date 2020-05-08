@@ -7,5 +7,5 @@ pub mod velocity;
 pub use active_camera::ActiveCamera;
 pub use actor::{ActorData, CameraFollow, ControlState, PlayerActor};
 pub use animated_sprite::AnimatedSprite;
-pub use physics::{Collider, RigidBody};
+pub use physics::{Collider, PhysicsBody, RayTracer};
 pub use velocity::Velocity;

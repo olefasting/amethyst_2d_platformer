@@ -14,6 +14,8 @@ use crate::resources::*;
 use crate::states::*;
 use crate::Animation;
 
+use crate::Ray;
+
 const WORLD_GRAVITY: f32 = 6.0;
 
 const VIEW_WIDTH: f32 = 1024.0;
@@ -29,10 +31,12 @@ impl SimpleState for GameplayState {
     world.register::<ControlState>();
     world.register::<PlayerActor>();
     world.register::<ActorData>();
-    world.register::<RigidBody>();
+    world.register::<PhysicsBody>();
     world.register::<Velocity>();
     world.register::<AnimatedSprite>();
     world.register::<CameraFollow>();
+    world.register::<Collider>();
+    world.register::<RayTracer>();
 
     world.insert(WorldGravity(WORLD_GRAVITY));
     world
@@ -76,6 +80,14 @@ impl SimpleState for GameplayState {
     let mut transform = Transform::default();
     transform.set_translation_xyz(50.0, 300.0, 0.0);
 
+    let rays = vec![
+      Ray::default().with_ray(Vector2::new(0.0, 0.1)),
+      Ray::new(Vector2::new(0.25, 0.0), Vector2::new(0.0, 0.1)),
+      Ray::new(Vector2::new(0.5, 0.0), Vector2::new(0.0, 0.1)),
+      Ray::new(Vector2::new(0.75, 0.0), Vector2::new(0.0, 0.1)),
+      Ray::new(Vector2::new(1.0, 0.0), Vector2::new(0.0, 0.1)),
+    ];
+
     world
       .create_entity()
       .with(transform)
@@ -83,9 +95,10 @@ impl SimpleState for GameplayState {
       .with(animated_sprite)
       .with(ActorData::default())
       .with(PlayerActor)
-      .with(RigidBody::default())
+      .with(PhysicsBody::default())
       .with(Velocity::default())
       .with(ControlState::default())
+      .with(RayTracer::new(rays, true))
       .build();
 
     println!("Starting game!");
