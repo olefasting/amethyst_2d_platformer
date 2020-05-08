@@ -28,7 +28,7 @@ Mac OS X users may explicitly choose `"metal"` with the following command:
 cargo run --no-default-features --features "metal"
 ```
 
-Credits for player sprite goes to [Clint Bellanger](https://opengameart.org/content/platformer-animations) and it is licensed under [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/).  
+Credits for the [player sprite](https://github.com/olefasting/capstone/blob/master/assets/textures/player.png) goes to [Clint Bellanger](https://opengameart.org/content/platformer-animations) and it is licensed under [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/).  
 
 Copyright 2020 Ole A. Sjo Fasting  
 
