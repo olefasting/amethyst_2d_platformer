@@ -1,6 +1,6 @@
 # capstone
 
-2d platformer made in Amethyst, the Rust game engine. The goal of this project is to develop a usable starter project or template for other Amethyst users.  
+2d platformer made in [Amethyst](https://amethyst.rs/), the [Rust](https://www.rust-lang.org/) game engine. The goal of this project is to develop a usable starter project or template for other Amethyst users.  
 
 Uses ncollide2d for collisions. Everything else is made from the ground up. There are a lot of bugs in the code yet, as it is still in an early stage, so it is obviously not meant for any real use, except for learning purposes, as of now.  
 
