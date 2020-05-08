@@ -6,7 +6,6 @@ use amethyst::{
   core::Transform,
   prelude::*,
   renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture},
-  shrev::EventChannel,
 };
 
 use ncollide2d::{
@@ -20,7 +19,7 @@ use crate::resources::*;
 use crate::states::*;
 use crate::Animation;
 
-use crate::{CollisionEvent, CollisionEventChannel};
+// use crate::{resources::CollisionEventChannel, CollisionEvent};
 
 const WORLD_GRAVITY: f32 = 6.0;
 
@@ -45,9 +44,7 @@ impl SimpleState for GameplayState {
 
     world.insert(WorldGravity(WORLD_GRAVITY));
     world.insert(CurrentState(StateId::GameplayState));
-    world.insert(CollisionEventChannel::new(
-      EventChannel::<CollisionEvent>::new(),
-    ));
+    world.insert(Collisions);
 
     initialize_camera(world);
     initialize_player(world);
@@ -143,7 +140,11 @@ fn initialize_player(world: &mut World) {
     .with(PhysicsBody::default())
     .with(Velocity::default())
     .with(ControlState::default())
-    .with(Collider::new(shape_handle, true))
+    .with(
+      Collider::default()
+        .with_shape_handle(shape_handle)
+        .with_debug_draw(),
+    )
     .build();
 }
 
@@ -163,7 +164,11 @@ fn initialize_ground(world: &mut World) {
       .create_entity()
       .with(transform)
       .with(sprite_render.clone())
-      .with(Collider::new(shape_handle, true))
+      .with(
+        Collider::default()
+          .with_shape_handle(shape_handle)
+          .with_debug_draw(),
+      )
       .with(Ground)
       .build();
   }
