@@ -6,12 +6,12 @@ use amethyst::{
 use crate::Ray;
 
 #[derive(Debug, Clone)]
-pub struct RayTracer {
+pub struct RayCaster {
   pub colliders: Vec<Ray>,
   pub debug_draw: bool,
 }
 
-impl RayTracer {
+impl RayCaster {
   pub fn new(colliders: Vec<Ray>, debug_draw: bool) -> Self {
     Self {
       colliders,
@@ -20,7 +20,7 @@ impl RayTracer {
   }
 }
 
-impl Default for RayTracer {
+impl Default for RayCaster {
   fn default() -> Self {
     Self {
       colliders: Vec::new(),
@@ -29,6 +29,6 @@ impl Default for RayTracer {
   }
 }
 
-impl Component for RayTracer {
+impl Component for RayCaster {
   type Storage = VecStorage<Self>;
 }

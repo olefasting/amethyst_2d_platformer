@@ -4,7 +4,7 @@ use amethyst::{
   ecs::{Join, Read, ReadStorage, System, SystemData, WriteStorage},
 };
 
-use crate::components::{Collider, RayTracer};
+use crate::components::{Collider, RayCaster};
 
 #[derive(SystemDesc)]
 pub struct CollisionSystem;
@@ -12,7 +12,7 @@ pub struct CollisionSystem;
 impl<'s> System<'s> for CollisionSystem {
   type SystemData = (
     ReadStorage<'s, Transform>,
-    ReadStorage<'s, RayTracer>,
+    ReadStorage<'s, RayCaster>,
     ReadStorage<'s, Collider>,
   );
 
