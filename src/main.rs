@@ -21,11 +21,11 @@ pub mod utils;
 use collision_event::{CollisionEvent, CollisionEventChannel};
 
 use animation::*;
-use components::*;
-use resources::*;
+// use components::*;
+// use resources::*;
 use states::*;
 use systems::*;
-use utils::*;
+// use utils::*;
 
 fn main() -> amethyst::Result<()> {
     amethyst::start_logger(Default::default());

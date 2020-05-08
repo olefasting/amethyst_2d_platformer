@@ -1,14 +1,9 @@
-use std::{
-  collections::HashMap,
-  time::{Duration, Instant},
-};
+use std::{collections::HashMap, time::Instant};
 
 use amethyst::{
-  assets::{AssetStorage, Handle, Loader},
-  core::Transform,
+  assets::Handle,
   ecs::{Component, VecStorage},
-  prelude::*,
-  renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture},
+  renderer::SpriteSheet,
 };
 
 use crate::Animation;
