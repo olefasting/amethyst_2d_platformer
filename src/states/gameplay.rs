@@ -28,6 +28,7 @@ impl SimpleState for GameplayState {
 
     world.register::<PlayerActor>();
     world.register::<ActorData>();
+    world.register::<ControlState>();
     world.register::<AnimatedSprite>();
     world.register::<DebugShape>();
 
@@ -150,6 +151,7 @@ fn create_player(world: &mut World) -> Entity {
     .with(DebugShape::new(shape_desc.clone()))
     .with(animated_sprite)
     .with(sprite_render)
+    .with(ControlState::default())
     .with(ActorData::default())
     .with(PlayerActor)
     .build()
