@@ -4,7 +4,7 @@ use amethyst::{
   ecs::{Join, ReadStorage, System, SystemData, WriteStorage},
 };
 
-use crate::{components::PlayerActor, utils::lerp};
+use crate::components::PlayerActor;
 
 const CAMERA_MOVE_THRESHOLD: f32 = 128.0;
 const CAMERA_MOVE_SPEED: f32 = 6.0;

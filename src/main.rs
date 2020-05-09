@@ -3,7 +3,7 @@ use amethyst::{
     input::{InputBundle, StringBindings},
     prelude::*,
     renderer::{
-        plugins::{RenderFlat2D, RenderToWindow},
+        plugins::{RenderDebugLines, RenderFlat2D, RenderToWindow},
         types::DefaultBackend,
         RenderingBundle,
     },
@@ -19,7 +19,7 @@ pub mod components;
 pub mod resources;
 pub mod states;
 pub mod systems;
-pub mod utils;
+pub mod util;
 
 use animation::*;
 // use components::*;
@@ -43,7 +43,8 @@ fn main() -> amethyst::Result<()> {
         .with_plugin(
             RenderToWindow::from_config_path(display_config_path)?.with_clear([0.0, 0.0, 0.0, 1.0]),
         )
-        .with_plugin(RenderFlat2D::default());
+        .with_plugin(RenderFlat2D::default())
+        .with_plugin(RenderDebugLines::default());
 
     let input_bundle =
         InputBundle::<StringBindings>::new().with_bindings_from_file(bindings_path)?;
@@ -54,13 +55,22 @@ fn main() -> amethyst::Result<()> {
             ActorControlSystem::default(),
             String::from("actor_control_system"),
             vec![String::from("input_system")],
-        );
+        )
+        .with_post_physics(
+            DebugShapesSystem,
+            String::from("debug_shapes_system"),
+            vec![String::from("input_system")],
+        )
+        .with_post_physics(AnimationSystem, String::from("animation_system"), vec![]);
 
     let game_data = GameDataBuilder::default()
         .with_bundle(TransformBundle::new())?
         .with_bundle(physics_bundle)?
-        .with_bundle(rendering_bundle)?
-        .with(AnimationSystem, "animation_system", &[]);
+        .with_bundle(rendering_bundle)?;
+    /*
+    .with(AnimationSystem, "animation_system", &[])
+    .with(DebugShapesSystem, "debug_shapes_system", &[]);
+    */
 
     let mut game = Application::new(assets_dir, GameplayState::default(), game_data)?;
     game.run();

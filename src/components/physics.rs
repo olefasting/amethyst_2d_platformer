@@ -1,6 +1,12 @@
-use amethyst::prelude::*;
+use amethyst::{
+  ecs::{Component, VecStorage},
+  prelude::*,
+  renderer::{debug_drawing::DebugLinesComponent, palette::Srgba},
+};
 
 use amethyst_physics::prelude::*;
+
+use crate::util;
 
 pub const TILE_COLLISION_GROUP: u8 = 5;
 pub const PLAYER_COLLISION_GROUP: u8 = 6;
@@ -152,4 +158,40 @@ impl CollisionShapeBuilder {
     let physics_world = world.fetch::<PhysicsWorld<f32>>();
     physics_world.shape_server().create(&self.desc)
   }
+}
+
+#[derive(Debug, Clone)]
+pub struct DebugShape {
+  pub desc: ShapeDesc<f32>,
+  pub color: Srgba,
+}
+
+impl DebugShape {
+  pub fn new(desc: ShapeDesc<f32>) -> Self {
+    Self {
+      desc,
+      color: Srgba::new(1.0, 0.0, 0.0, 1.0),
+    }
+  }
+}
+
+impl Component for DebugShape {
+  type Storage = VecStorage<Self>;
+}
+
+fn debug_lines_component(shape_desc: &ShapeDesc<f32>, color: Srgba) -> DebugLinesComponent {
+  let mut debug_lines_component = DebugLinesComponent::new();
+
+  let points = util::shape_desc_to_points(shape_desc, true);
+
+  let len = points.len();
+  for i in 0..len {
+    if let Some(p1) = points.get(i) {
+      let ii = if i + 1 >= len { 0 } else { i + 1 };
+      if let Some(p2) = points.get(ii) {
+        debug_lines_component.add_line([p1.x, p1.y, 1.0].into(), [p2.x, p2.y, 1.0].into(), color);
+      }
+    }
+  }
+  debug_lines_component
 }

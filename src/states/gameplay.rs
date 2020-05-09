@@ -2,19 +2,17 @@ use std::time::Duration;
 
 use amethyst::{
   assets::{AssetStorage, Handle, Loader},
-  core::math::Vector3,
-  core::Transform,
+  core::{ecs::Entity, math::Vector3, Transform},
   prelude::*,
-  renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture},
+  renderer::{
+    debug_drawing::{DebugLines, DebugLinesComponent, DebugLinesParams},
+    Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture,
+  },
 };
 
 use amethyst_physics::prelude::*;
 
-use crate::components::actor::actions::*;
-use crate::components::*;
-use crate::resources::*;
-use crate::states::*;
-use crate::Animation;
+use crate::{components::actor::actions::*, components::*, resources::*, states::*, Animation};
 
 const VIEW_WIDTH: f32 = 1024.0;
 const VIEW_HEIGHT: f32 = 768.0;
@@ -31,13 +29,22 @@ impl SimpleState for GameplayState {
     world.register::<PlayerActor>();
     world.register::<ActorData>();
     world.register::<AnimatedSprite>();
+    world.register::<DebugShape>();
+
+    world.register::<DebugLinesComponent>();
+
+    world.insert(DebugLines::new());
+    world.insert(DebugLinesParams { line_width: 1.0 });
 
     world.insert(CurrentState(StateId::GameplayState));
+    world.insert(ViewSize::new(VIEW_WIDTH, VIEW_HEIGHT));
 
     setup_physics(world);
 
-    create_camera(world);
-    create_player(world);
+    let camera = create_camera(world);
+    let _player = create_player(world);
+
+    world.insert(ActiveCamera(camera));
 
     create_ground(world);
   }
@@ -75,18 +82,18 @@ fn setup_physics(world: &mut World) {
   physics_world.world_server().set_gravity(&gravity_vec);
 }
 
-fn create_camera(world: &mut World) {
+fn create_camera(world: &mut World) -> Entity {
   let mut transform = Transform::default();
-  transform.set_translation_xyz(50.0, 500.0, 1.0);
+  transform.set_translation_xyz(50.0, 500.0, 10.0);
 
   world
     .create_entity()
     .with(Camera::standard_2d(VIEW_WIDTH, VIEW_HEIGHT))
     .with(transform)
-    .build();
+    .build()
 }
 
-fn create_player(world: &mut World) {
+fn create_player(world: &mut World) -> Entity {
   let mut animated_sprite = AnimatedSprite::default();
   animated_sprite
     .sprite_sheet_handle
@@ -123,11 +130,11 @@ fn create_player(world: &mut World) {
   transform.set_translation_xyz(50.0, 500.0, 0.0);
 
   let shape_desc = ShapeDesc::Capsule {
-    half_height: 32.0,
-    radius: 16.0,
+    half_height: 16.0,
+    radius: 20.0,
   };
 
-  let collider_shape = CollisionShapeBuilder::new(shape_desc).build(world);
+  let collider_shape = CollisionShapeBuilder::new(shape_desc.clone()).build(world);
 
   let rigid_body = RigidBodyBuilder::default()
     .with_own_groups(&[ACTOR_COLLISION_GROUP, PLAYER_COLLISION_GROUP])
@@ -140,11 +147,12 @@ fn create_player(world: &mut World) {
     .with(rigid_body)
     .with(collider_shape)
     .with(transform)
+    .with(DebugShape::new(shape_desc.clone()))
     .with(animated_sprite)
     .with(sprite_render)
     .with(ActorData::default())
     .with(PlayerActor)
-    .build();
+    .build()
 }
 
 fn create_ground(world: &mut World) {
@@ -173,6 +181,7 @@ fn create_ground(world: &mut World) {
       .with(rigid_body)
       .with(collider_shape)
       .with(transform)
+      .with(DebugShape::new(shape_desc.clone()))
       .with(sprite_render.clone())
       .build();
   }
