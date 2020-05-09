@@ -52,14 +52,22 @@ fn main() -> amethyst::Result<()> {
     let physics_bundle = PhysicsBundle::<f32, NPhysicsBackend>::new()
         .with_bundle_pre_physics(input_bundle)
         .with_pre_physics(
-            ActorControlSystem::default(),
-            String::from("actor_control_system"),
+            LocalPlayerSystem::default(),
+            String::from("local_player_system"),
             vec![String::from("input_system")],
+        )
+        .with_pre_physics(
+            ActorControlSystem,
+            String::from("actor_control_system"),
+            vec![
+                String::from("input_system"),
+                String::from("local_player_system"),
+            ],
         )
         .with_post_physics(
             DebugShapesSystem,
             String::from("debug_shapes_system"),
-            vec![String::from("input_system")],
+            vec![String::from("actor_control_system")],
         )
         .with_post_physics(AnimationSystem, String::from("animation_system"), vec![]);
 

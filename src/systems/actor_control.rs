@@ -7,23 +7,16 @@ use amethyst::{
 
 use amethyst_physics::prelude::*;
 
-use crate::components::{actor::ActorData, PlayerActor};
+use crate::components::{actor::ActorData, ControlState, PlayerActor};
 
 #[derive(SystemDesc)]
-pub struct ActorControlSystem {
-  jump_held: bool,
-}
-
-impl Default for ActorControlSystem {
-  fn default() -> Self {
-    Self { jump_held: false }
-  }
-}
+pub struct ActorControlSystem;
 
 impl<'s> System<'s> for ActorControlSystem {
   type SystemData = (
     ReadStorage<'s, PlayerActor>,
     ReadStorage<'s, ActorData>,
+    ReadStorage<'s, ControlState>,
     ReadStorage<'s, PhysicsHandle<PhysicsRigidBodyTag>>,
     ReadExpect<'s, PhysicsWorld<f32>>,
     Read<'s, InputHandler<StringBindings>>,
@@ -31,35 +24,33 @@ impl<'s> System<'s> for ActorControlSystem {
 
   fn run(
     &mut self,
-    (player_actors, actor_datas, rigid_body_tags, physics_world, input): Self::SystemData,
+    (player_actors, actor_datas, control_states, rigid_body_tags, physics_world, input): Self::SystemData,
   ) {
-    for (_, _actor_data, rigid_body_tag) in (&player_actors, &actor_datas, &rigid_body_tags).join()
+    for (_, _actor_data, control_state, rigid_body_tag) in (
+      &player_actors,
+      &actor_datas,
+      &control_states,
+      &rigid_body_tags,
+    )
+      .join()
     {
       let mut input_direction = Vector3::new(0.0, 0.0, 0.0);
-      if input.action_is_down("up").unwrap_or(false) {
+      if control_state.up {
         input_direction.y += 1.0;
       }
-      if input.action_is_down("down").unwrap_or(false) {
+      if control_state.down {
         input_direction.y -= 1.0
       }
-      if input.action_is_down("right").unwrap_or(false) {
+      if control_state.right {
         input_direction.x += 1.0;
       }
-      if input.action_is_down("left").unwrap_or(false) {
+      if control_state.left {
         input_direction.x -= 1.0;
       }
 
-      if input.action_is_down("jump").unwrap_or(false) {
-        if self.jump_held {
-          self.jump_held = true;
-          true
-        } else {
-          false
-        }
-      } else {
-        self.jump_held = false;
-        false
-      };
+      if control_state.jump {
+        // jump
+      }
 
       physics_world
         .rigid_body_server()
@@ -68,5 +59,3 @@ impl<'s> System<'s> for ActorControlSystem {
     }
   }
 }
-
-struct ControlActions {}
