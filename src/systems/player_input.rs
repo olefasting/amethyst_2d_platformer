@@ -43,8 +43,8 @@ impl<'s> System<'s> for PlayerInputSystem {
   }
 }
 
-impl PlayerInputSystem {
-  pub fn new() -> Self {
+impl Default for PlayerInputSystem {
+  fn default() -> Self {
     Self { jump_held: false }
   }
 }

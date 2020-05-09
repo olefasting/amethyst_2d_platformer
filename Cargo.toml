@@ -5,7 +5,7 @@ authors = ["Ole A. Sjo Fasting <oasf@polygo.no>"]
 edition = "2018"
 
 [dependencies]
-amethyst = { git = "https://github.com/amethyst/amethyst", branch = "master" }
+amethyst = "0.15.0"
 ncollide2d = "0.23.0"
 
 [features]

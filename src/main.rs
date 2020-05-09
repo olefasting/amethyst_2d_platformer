@@ -52,7 +52,7 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(input_bundle)?
         .with_bundle(TransformBundle::new())?
         .with(
-            PlayerInputSystem::new(),
+            PlayerInputSystem::default(),
             "player_input_system",
             &["input_system"],
         )

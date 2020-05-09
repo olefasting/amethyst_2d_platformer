@@ -46,9 +46,9 @@ impl SimpleState for GameplayState {
     world.insert(CurrentState(StateId::GameplayState));
     world.insert(Collisions);
 
-    initialize_camera(world);
-    initialize_player(world);
-    initialize_ground(world);
+    create_camera(world);
+    create_player(world);
+    create_ground(world);
 
     println!("Starting game!");
   }
@@ -80,7 +80,7 @@ fn load_sprite_sheet(world: &mut World, name: &str, ext: &str) -> Handle<SpriteS
   )
 }
 
-fn initialize_camera(world: &mut World) {
+fn create_camera(world: &mut World) {
   let mut transform = Transform::default();
   transform.set_translation_xyz(50.0, 500.0, 1.0);
 
@@ -92,7 +92,7 @@ fn initialize_camera(world: &mut World) {
     .build();
 }
 
-fn initialize_player(world: &mut World) {
+fn create_player(world: &mut World) {
   let mut animated_sprite = AnimatedSprite::default();
   animated_sprite
     .sprite_sheet_handle
@@ -148,7 +148,7 @@ fn initialize_player(world: &mut World) {
     .build();
 }
 
-fn initialize_ground(world: &mut World) {
+fn create_ground(world: &mut World) {
   let sprite_render = SpriteRender {
     sprite_sheet: load_sprite_sheet(world, "ground", "png"),
     sprite_number: 0,
