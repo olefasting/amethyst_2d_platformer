@@ -40,12 +40,16 @@ impl SimpleState for GameplayState {
     world.insert(CurrentState(StateId::GameplayState));
     world.insert(ViewSize::new(VIEW_WIDTH, VIEW_HEIGHT));
 
-    setup_physics(world);
+    let gravity_vec = Vector3::new(0.0, -WORLD_GRAVITY, 0.0);
+    world.insert(WorldGravity(gravity_vec));
+
+    setup_physics(world, gravity_vec);
 
     let camera = create_camera(world);
-    let _player = create_player(world);
 
     world.insert(ActiveCamera(camera));
+
+    let _player = create_player(world);
 
     create_ground(world);
   }
@@ -77,7 +81,7 @@ fn load_sprite_sheet(world: &mut World, name: &str, ext: &str) -> Handle<SpriteS
   )
 }
 
-fn setup_physics(world: &mut World) {
+fn setup_physics(world: &mut World, gravity: Vector3<f32>) {
   let physics_world = world.fetch::<PhysicsWorld<f32>>();
   let gravity_vec = Vector3::new(0.0, -WORLD_GRAVITY, 0.0);
   physics_world.world_server().set_gravity(&gravity_vec);
@@ -137,7 +141,7 @@ fn create_player(world: &mut World) -> Entity {
 
   let collider_shape = CollisionShapeBuilder::new(shape_desc.clone()).build(world);
 
-  let rigid_body = RigidBodyBuilder::default()
+  let rigid_body = RigidBodyBuilder::new_kinematic_body()
     .with_own_groups(&[ACTOR_COLLISION_GROUP, PLAYER_COLLISION_GROUP])
     .with_target_group(TILE_COLLISION_GROUP)
     .with_lock_rotation_xyz(true, true, true)

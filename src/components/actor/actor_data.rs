@@ -2,6 +2,8 @@ use amethyst::ecs::{Component, VecStorage};
 
 use super::actions::*;
 
+const DEFAULT_DRAG: f32 = 10.0;
+
 const DEFAULT_GROUND_ACCELERATION: f32 = 10.0;
 const DEFAULT_GROUND_MAX_SPEED: f32 = 10.0;
 
@@ -12,6 +14,7 @@ const DEFAULT_JUMP_POWER: f32 = 50.0;
 
 #[derive(Debug, Copy, Clone)]
 pub struct ActorData {
+  pub drag: f32,
   pub ground_acceleration: f32,
   pub ground_max_speed: f32,
   pub air_acceleration: f32,
@@ -26,6 +29,7 @@ pub struct ActorData {
 impl Default for ActorData {
   fn default() -> Self {
     Self {
+      drag: DEFAULT_DRAG,
       ground_acceleration: DEFAULT_GROUND_ACCELERATION,
       ground_max_speed: DEFAULT_GROUND_MAX_SPEED,
       air_acceleration: DEFAULT_AIR_ACCELERATION,

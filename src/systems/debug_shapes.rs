@@ -4,25 +4,11 @@ use amethyst::{
     SystemDesc, Time, Transform,
   },
   derive::SystemDesc,
-  ecs::{Join, Read, ReadExpect, ReadStorage, System, SystemData, Write},
-  input::{InputHandler, StringBindings},
-  renderer::{
-    camera::Camera,
-    debug_drawing::{DebugLines, DebugLinesComponent, DebugLinesParams},
-    palette::Srgba,
-    plugins::{RenderDebugLines, RenderToWindow},
-    types::DefaultBackend,
-    RenderingBundle,
-  },
+  ecs::{Join, ReadExpect, ReadStorage, System, SystemData, Write},
+  renderer::debug_drawing::DebugLines,
 };
 
-use amethyst_physics::prelude::*;
-
-use crate::{
-  components::DebugShape,
-  resources::{ActiveCamera, ViewSize},
-  util,
-};
+use crate::{components::DebugShape, resources::ActiveCamera, util};
 
 #[derive(Debug, Default, SystemDesc)]
 pub struct DebugShapesSystem;
@@ -41,7 +27,7 @@ impl<'s> System<'s> for DebugShapesSystem {
   ) {
     for (transform, debug_shape) in (&transforms, &debug_shapes).join() {
       // FIXME: Check if on screen before draw
-      if let Some(camera_transform) = transforms.get(active_camera.0) {
+      if let Some(_camera_transform) = transforms.get(active_camera.0) {
         let translation = transform.translation();
         let points = util::shape_desc_to_points(&debug_shape.desc, true);
 

@@ -1,4 +1,7 @@
-use amethyst::{core::math::Vector2, ecs::Entity};
+use amethyst::{
+  core::math::{Vector2, Vector3},
+  ecs::Entity,
+};
 
 use crate::states::StateId;
 
@@ -7,6 +10,9 @@ pub struct CurrentState(pub StateId);
 
 #[derive(Debug, Clone)]
 pub struct ActiveCamera(pub Entity);
+
+#[derive(Debug, Clone)]
+pub struct WorldGravity(pub Vector3<f32>);
 
 #[derive(Debug, Clone)]
 pub struct ViewSize(pub Vector2<f32>);
