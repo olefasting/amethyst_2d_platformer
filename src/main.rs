@@ -10,15 +10,16 @@ use amethyst::{
     utils::application_root_dir,
 };
 
+use amethyst_physics::PhysicsBundle;
+
+use amethyst_nphysics::NPhysicsBackend;
+
 pub mod animation;
-pub mod collision;
 pub mod components;
 pub mod resources;
 pub mod states;
 pub mod systems;
 pub mod utils;
-
-use collision::{Collision, CollisionDirection};
 
 use animation::*;
 // use components::*;
@@ -47,25 +48,19 @@ fn main() -> amethyst::Result<()> {
     let input_bundle =
         InputBundle::<StringBindings>::new().with_bindings_from_file(bindings_path)?;
 
-    let game_data = GameDataBuilder::default()
-        .with_bundle(rendering_bundle)?
-        .with_bundle(input_bundle)?
-        .with_bundle(TransformBundle::new())?
-        .with(
-            PlayerInputSystem::new(),
-            "player_input_system",
-            &["input_system"],
-        )
-        .with(ControlSystem, "control_system", &["player_input_system"])
-        .with(CollisionSystem, "collision_system", &["control_system"])
-        .with(PhysicsSystem, "physics_system", &["collision_system"])
-        .with(MovementSystem, "movement_system", &["physics_system"])
-        .with(AnimationSystem, "animation_system", &["movement_system"])
-        .with(
-            CameraFollowSystem,
-            "camera_follow_system",
-            &["movement_system"],
+    let physics_bundle = PhysicsBundle::<f32, NPhysicsBackend>::new()
+        .with_bundle_pre_physics(input_bundle)
+        .with_pre_physics(
+            ActorControlSystem::default(),
+            String::from("actor_control_system"),
+            vec![String::from("input_system")],
         );
+
+    let game_data = GameDataBuilder::default()
+        .with_bundle(TransformBundle::new())?
+        .with_bundle(physics_bundle)?
+        .with_bundle(rendering_bundle)?
+        .with(AnimationSystem, "animation_system", &[]);
 
     let mut game = Application::new(assets_dir, GameplayState::default(), game_data)?;
     game.run();

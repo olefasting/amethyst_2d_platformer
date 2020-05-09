@@ -4,10 +4,7 @@ use amethyst::{
   ecs::{Join, ReadStorage, System, SystemData, WriteStorage},
 };
 
-use crate::{
-  components::{ActiveCamera, PlayerActor},
-  utils::lerp,
-};
+use crate::{components::PlayerActor, utils::lerp};
 
 const CAMERA_MOVE_THRESHOLD: f32 = 128.0;
 const CAMERA_MOVE_SPEED: f32 = 6.0;
@@ -16,13 +13,10 @@ const CAMERA_MOVE_SPEED: f32 = 6.0;
 pub struct CameraFollowSystem;
 
 impl<'s> System<'s> for CameraFollowSystem {
-  type SystemData = (
-    WriteStorage<'s, Transform>,
-    ReadStorage<'s, ActiveCamera>,
-    ReadStorage<'s, PlayerActor>,
-  );
+  type SystemData = (WriteStorage<'s, Transform>, ReadStorage<'s, PlayerActor>);
 
-  fn run(&mut self, (mut transforms, active_cameras, player_actors): Self::SystemData) {
+  fn run(&mut self, (mut transforms, player_actors): Self::SystemData) {
+    /*
     let mut player_transform: Option<Transform> = None;
     for (transform, _) in (&transforms, &player_actors).join() {
       player_transform = Some(transform.clone());
@@ -31,7 +25,7 @@ impl<'s> System<'s> for CameraFollowSystem {
 
     match player_transform {
       Some(player_transform) => {
-        for (transform, active_camera) in (&mut transforms, &active_cameras).join() {
+        for (transform, active_camera) in (&mut transforms).join() {
           let player_translation = player_transform.translation();
           let camera_translation = transform.translation().clone();
           transform.set_translation(Vector3::new(
@@ -64,5 +58,6 @@ impl<'s> System<'s> for CameraFollowSystem {
       }
       _ => (),
     }
+    */
   }
 }

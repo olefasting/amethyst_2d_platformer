@@ -2,13 +2,13 @@ use amethyst::ecs::{Component, VecStorage};
 
 use super::actions::*;
 
-const DEFAULT_GROUND_ACCELERATION: f32 = 3.0;
-const DEFAULT_GROUND_MAX_SPEED: f32 = 6.0;
+const DEFAULT_GROUND_ACCELERATION: f32 = 10.0;
+const DEFAULT_GROUND_MAX_SPEED: f32 = 10.0;
 
 const DEFAULT_AIR_ACCELERATION: f32 = 3.0;
 const DEFAULT_AIR_MAX_SPEED: f32 = 6.0;
 
-const DEFAULT_JUMP_POWER: f32 = 32.0;
+const DEFAULT_JUMP_POWER: f32 = 50.0;
 
 #[derive(Debug, Copy, Clone)]
 pub struct ActorData {

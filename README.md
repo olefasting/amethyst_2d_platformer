@@ -1,8 +1,8 @@
 # amethyst-2d-platformer
 
-2d platformer made in [Amethyst](https://amethyst.rs/), the [Rust](https://www.rust-lang.org/) game engine. The goal of this project is to develop a usable starter project or template for other Amethyst users.  
+2d platformer made in [Amethyst](https://github.com/amethyst/amethyst), the [Rust](https://github.com/rust-lang/rust) game engine. The goal of this project is to develop a usable starter project or template for other Amethyst users.  
 
-Uses ncollide2d for collisions. Everything else is made from the ground up. There are a lot of bugs in the code yet, as it is still in an early stage, so it is obviously not meant for any real use, except for learning purposes, as of now.  
+Uses [amethyst_physics](https://github.com/AndreaCatania/amethyst_physics) but everything else is made from the ground up. There are a lot of bugs in the code yet, as it is still in an early stage, so it is obviously not meant for any real use, except for learning purposes, as of now.  
 
 Pull requests and issues are very welcome; the latter both for actual bugs, as well as any suggestions regarding coding practice, etc. I am rather new to Amethyst and I am not a pro Rust dev, as of yet (though I have extensive programming experience, both as a hobby and professionally), so there might be some examples of bad practice in the code. If found, I would really appreciate an issue on the matter. Thanks, in advance!  
 

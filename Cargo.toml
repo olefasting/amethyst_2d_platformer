@@ -5,8 +5,9 @@ authors = ["Ole A. Sjo Fasting <oasf@polygo.no>"]
 edition = "2018"
 
 [dependencies]
-amethyst = { git = "https://github.com/amethyst/amethyst", branch = "master" }
-ncollide2d = "0.23.0"
+amethyst = "0.15.0"
+amethyst_nphysics = "0.2.0"
+amethyst_physics = "0.2.0"
 
 [features]
 default = ["vulkan"]
