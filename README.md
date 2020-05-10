@@ -1,4 +1,4 @@
-# amethyst-2d-platformer
+# amethyst_2d_platformer
 
 2d platformer made in [Amethyst](https://github.com/amethyst/amethyst), the [Rust](https://github.com/rust-lang/rust) game engine. The goal of this project is to develop a usable starter project or template for other Amethyst users.  
 
