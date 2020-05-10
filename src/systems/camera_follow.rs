@@ -16,6 +16,9 @@ const HORIZONTAL_BOUNDS_SCREEN_FRACTION: f32 = 0.33;
 const HORIZONTAL_BOUNDS_DIRECTION_MODIFIER: f32 = 0.25;
 const HORIZONTAL_BOUNDS_MAX_PIXELS: f32 = 800.0;
 
+const VERTICAL_BOUNDS_SCREEN_FRACTION: f32 = 0.33;
+const VERTICAL_BOUNDS_MAX_PIXELS: f32 = 450.0;
+
 const MAX_FOLLOW_SPEED: f32 = 256.0;
 
 #[derive(SystemDesc)]
@@ -35,8 +38,10 @@ impl<'s> System<'s> for CameraFollowSystem {
     &mut self,
     (mut transforms, actor_datas, player_actors, active_camera, screen_dimensions, physics_time): Self::SystemData,
   ) {
-    let (short_extent, long_extent) = {
-      // TODO: LIMIT WIDTH
+    // TODO: LIMIT EXTENTS
+    let half_horizontal_extent =
+      (screen_dimensions.height() * VERTICAL_BOUNDS_SCREEN_FRACTION) / 2.0;
+    let (short_horizontal_extent, long_horizontal_extent) = {
       let half_extent = (screen_dimensions.width() * HORIZONTAL_BOUNDS_SCREEN_FRACTION) / 2.0;
       (
         half_extent / HORIZONTAL_BOUNDS_DIRECTION_MODIFIER,
@@ -55,25 +60,36 @@ impl<'s> System<'s> for CameraFollowSystem {
 
       let (left_threshold, right_threshold) = if actor_data.facing_right {
         (
-          camera_translation.x + long_extent,
-          camera_translation.x - short_extent,
+          camera_translation.x + long_horizontal_extent,
+          camera_translation.x - short_horizontal_extent,
         )
       } else {
         (
-          camera_translation.x + short_extent,
-          camera_translation.x - long_extent,
+          camera_translation.x + short_horizontal_extent,
+          camera_translation.x - long_horizontal_extent,
         )
       };
 
       if player_translation.x <= left_threshold || player_translation.x >= right_threshold {
-        let distance_x =
-          (player_translation.x - camera_translation.x) * physics_time.delta_seconds();
-        camera_translation.x += if distance_x < MAX_FOLLOW_SPEED {
-          distance_x
+        let distance = (player_translation.x - camera_translation.x) * physics_time.delta_seconds();
+        camera_translation.x += if distance < MAX_FOLLOW_SPEED {
+          distance
         } else {
           MAX_FOLLOW_SPEED * physics_time.delta_seconds()
         };
       }
+
+      if player_translation.y <= camera_translation.y - half_horizontal_extent
+        || player_translation.y >= camera_translation.y + half_horizontal_extent
+      {
+        let distance = (player_translation.y - camera_translation.y) * physics_time.delta_seconds();
+        camera_translation.y += if distance < MAX_FOLLOW_SPEED {
+          distance
+        } else {
+          MAX_FOLLOW_SPEED * physics_time.delta_seconds()
+        };
+      }
+
       break;
     }
 
