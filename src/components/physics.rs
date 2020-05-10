@@ -82,47 +82,47 @@ impl RigidBodyBuilder {
     self
   }
 
-  pub fn with_lock_translation_x(mut self, lock: bool) -> Self {
-    self.desc.lock_translation_x = lock;
+  pub fn with_lock_translation_x(mut self) -> Self {
+    self.desc.lock_translation_x = true;
     self
   }
 
-  pub fn with_lock_translation_y(mut self, lock: bool) -> Self {
-    self.desc.lock_translation_y = lock;
+  pub fn with_lock_translation_y(mut self) -> Self {
+    self.desc.lock_translation_y = true;
     self
   }
 
-  pub fn with_lock_translation_z(mut self, lock: bool) -> Self {
-    self.desc.lock_translation_z = lock;
+  pub fn with_lock_translation_z(mut self) -> Self {
+    self.desc.lock_translation_z = true;
     self
   }
 
-  pub fn with_lock_translation_xyz(mut self, lock_x: bool, lock_y: bool, lock_z: bool) -> Self {
-    self.desc.lock_translation_x = lock_x;
-    self.desc.lock_translation_y = lock_y;
-    self.desc.lock_translation_z = lock_z;
+  pub fn with_lock_translation_xyz(mut self) -> Self {
+    self.desc.lock_translation_x = true;
+    self.desc.lock_translation_y = true;
+    self.desc.lock_translation_z = true;
     self
   }
 
-  pub fn with_lock_rotation_x(mut self, lock: bool) -> Self {
-    self.desc.lock_rotation_x = lock;
+  pub fn with_lock_rotation_x(mut self) -> Self {
+    self.desc.lock_rotation_x = true;
     self
   }
 
-  pub fn with_lock_rotation_y(mut self, lock: bool) -> Self {
-    self.desc.lock_rotation_y = lock;
+  pub fn with_lock_rotation_y(mut self) -> Self {
+    self.desc.lock_rotation_y = true;
     self
   }
 
-  pub fn with_lock_rotation_z(mut self, lock: bool) -> Self {
-    self.desc.lock_rotation_z = lock;
+  pub fn with_lock_rotation_z(mut self) -> Self {
+    self.desc.lock_rotation_z = true;
     self
   }
 
-  pub fn with_lock_rotation_xyz(mut self, lock_x: bool, lock_y: bool, lock_z: bool) -> Self {
-    self.desc.lock_rotation_x = lock_x;
-    self.desc.lock_rotation_y = lock_y;
-    self.desc.lock_rotation_z = lock_z;
+  pub fn with_lock_rotation_xyz(mut self) -> Self {
+    self.desc.lock_rotation_x = true;
+    self.desc.lock_rotation_y = true;
+    self.desc.lock_rotation_z = true;
     self
   }
 

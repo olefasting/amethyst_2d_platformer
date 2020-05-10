@@ -161,10 +161,11 @@ fn create_player(world: &mut World) -> Entity {
   let collider_shape = CollisionShapeBuilder::new(shape_desc.clone()).build(world);
 
   let rigid_body = RigidBodyBuilder::new_dynamic_body()
+    .with_friction(0.0)
     .with_own_groups(&[COLLISION_GROUP_ACTOR, COLLISION_GROUP_PLAYER])
     .with_target_groups(&[COLLISION_GROUP_GROUND, COLLISION_GROUP_ACTOR])
     .with_contacts_to_report(ACTOR_CONTACTS_TO_REPORT)
-    .with_lock_rotation_xyz(true, true, true)
+    .with_lock_rotation_xyz()
     .build(world);
 
   world
@@ -198,6 +199,7 @@ fn create_ground(world: &mut World) {
     let collider_shape = CollisionShapeBuilder::new(shape_desc.clone()).build(world);
 
     let rigid_body = RigidBodyBuilder::new_static_body()
+      .with_friction(0.0)
       .with_own_group(COLLISION_GROUP_GROUND)
       .with_target_groups(&[COLLISION_GROUP_ACTOR, COLLISION_GROUP_PLAYER])
       .build(world);
