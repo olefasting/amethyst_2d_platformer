@@ -5,11 +5,11 @@ use amethyst::input::{InputHandler, StringBindings};
 use crate::components::{ControlState, PlayerActor};
 
 #[derive(SystemDesc)]
-pub struct PlayerInputSystem {
+pub struct LocalPlayerSystem {
   jump_held: bool,
 }
 
-impl<'s> System<'s> for PlayerInputSystem {
+impl<'s> System<'s> for LocalPlayerSystem {
   type SystemData = (
     ReadStorage<'s, PlayerActor>,
     WriteStorage<'s, ControlState>,
@@ -18,6 +18,8 @@ impl<'s> System<'s> for PlayerInputSystem {
 
   fn run(&mut self, (player_actors, mut control_states, input): Self::SystemData) {
     for (_, control_state) in (&player_actors, &mut control_states).join() {
+      control_state.clear();
+
       let jump = if input.action_is_down("jump").unwrap_or(false) {
         if self.jump_held {
           false
@@ -30,7 +32,7 @@ impl<'s> System<'s> for PlayerInputSystem {
         false
       };
 
-      control_state.all_controls(
+      control_state.set_all(
         input.action_is_down("up").unwrap_or(false),
         input.action_is_down("down").unwrap_or(false),
         input.action_is_down("left").unwrap_or(false),
@@ -43,7 +45,7 @@ impl<'s> System<'s> for PlayerInputSystem {
   }
 }
 
-impl Default for PlayerInputSystem {
+impl Default for LocalPlayerSystem {
   fn default() -> Self {
     Self { jump_held: false }
   }

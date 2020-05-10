@@ -10,7 +10,7 @@ pub struct ControlState {
 }
 
 impl ControlState {
-  pub fn all_controls(&mut self, up: bool, down: bool, left: bool, right: bool, jump: bool) {
+  pub fn set_all(&mut self, up: bool, down: bool, left: bool, right: bool, jump: bool) {
     self.up = up;
     self.down = down;
     self.left = left;
@@ -18,7 +18,7 @@ impl ControlState {
     self.jump = jump;
   }
 
-  pub fn reset(&mut self) {
+  pub fn clear(&mut self) {
     self.up = false;
     self.down = false;
     self.left = false;
