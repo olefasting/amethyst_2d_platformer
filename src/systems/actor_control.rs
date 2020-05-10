@@ -10,7 +10,7 @@ use crate::{
   components::{
     actor::{actions::*, ActorData},
     physics::COLLISION_GROUP_GROUND,
-    ControlState, PlayerActor,
+    ControlState,
   },
   resources::WorldGravity,
 };
@@ -20,8 +20,6 @@ pub struct ActorControlSystem;
 
 impl<'s> System<'s> for ActorControlSystem {
   type SystemData = (
-    ReadStorage<'s, PlayerActor>,
-    ReadStorage<'s, Transform>,
     WriteStorage<'s, ActorData>,
     ReadStorage<'s, ControlState>,
     ReadStorage<'s, PhysicsHandle<PhysicsRigidBodyTag>>,
@@ -32,8 +30,6 @@ impl<'s> System<'s> for ActorControlSystem {
   fn run(
     &mut self,
     (
-      player_actors,
-      transforms,
       mut actor_datas,
       control_states,
       rigid_body_tags,
@@ -41,14 +37,8 @@ impl<'s> System<'s> for ActorControlSystem {
       physics_world,
     ): Self::SystemData,
   ) {
-    for (_, transform, actor_data, control_state, rigid_body_tag) in (
-      &player_actors,
-      &transforms,
-      &mut actor_datas,
-      &control_states,
-      &rigid_body_tags,
-    )
-      .join()
+    for (actor_data, control_state, rigid_body_tag) in
+      (&mut actor_datas, &control_states, &rigid_body_tags).join()
     {
       // if let BodyMode::Kinematic = physics_world.rigid_body_server().mode(rigid_body_tag.get()) {
       let mut velocity = physics_world
@@ -103,14 +93,12 @@ impl<'s> System<'s> for ActorControlSystem {
         } else {
           velocity.x -= actor_data.air_acceleration
         }
-        println!("left: {}", velocity.x)
       } else if control_state.right {
         if is_grounded {
           velocity.x += actor_data.ground_acceleration
         } else {
           velocity.x += actor_data.air_acceleration
         }
-        println!("right: {}", velocity.x)
       } else {
         if velocity.x > 0.0 {
           velocity.x -= actor_data.drag;
