@@ -66,9 +66,10 @@ impl<'s> System<'s> for CameraFollowSystem {
       };
 
       if player_translation.x <= left_threshold || player_translation.x >= right_threshold {
-        let distance_x = player_translation.x - camera_translation.x;
-        camera_translation.x += if distance_x <= MAX_FOLLOW_SPEED {
-          distance_x * physics_time.delta_seconds()
+        let distance_x =
+          (player_translation.x - camera_translation.x) * physics_time.delta_seconds();
+        camera_translation.x += if distance_x < MAX_FOLLOW_SPEED {
+          distance_x
         } else {
           MAX_FOLLOW_SPEED * physics_time.delta_seconds()
         };
