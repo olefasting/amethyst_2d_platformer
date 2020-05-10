@@ -76,10 +76,6 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(TransformBundle::new())?
         .with_bundle(physics_bundle)?
         .with_bundle(rendering_bundle)?;
-    /*
-    .with(AnimationSystem, "animation_system", &[])
-    .with(DebugShapesSystem, "debug_shapes_system", &[]);
-    */
 
     let mut game = Application::new(assets_dir, GameplayState::default(), game_data)?;
     game.run();

@@ -2,12 +2,13 @@ use std::time::Duration;
 
 use amethyst::{
   assets::{AssetStorage, Handle, Loader},
-  core::{ecs::Entity, math::Vector3, Transform},
+  core::{ecs::Entity, math::Vector3, Parent, Transform},
   prelude::*,
   renderer::{
     debug_drawing::{DebugLines, DebugLinesComponent, DebugLinesParams},
     Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture,
   },
+  window::ScreenDimensions,
 };
 
 use amethyst_physics::prelude::*;
@@ -19,9 +20,6 @@ use crate::{
   states::*,
   Animation,
 };
-
-const VIEW_WIDTH: f32 = 1024.0;
-const VIEW_HEIGHT: f32 = 768.0;
 
 const WORLD_GRAVITY: f32 = 64.0;
 const WORLD_TERMINAL_VELOCITY: f32 = 300.0;
@@ -45,7 +43,6 @@ impl SimpleState for GameplayState {
     world.insert(DebugLinesParams { line_width: 1.0 });
 
     world.insert(CurrentState(StateId::GameplayState));
-    world.insert(ViewSize::new(VIEW_WIDTH, VIEW_HEIGHT));
 
     let gravity_vec = Vector3::new(0.0, -WORLD_GRAVITY, 0.0);
     world.insert(WorldGravity(gravity_vec));
@@ -56,12 +53,9 @@ impl SimpleState for GameplayState {
     )));
 
     setup_physics(world, &gravity_vec);
-
-    let camera = create_camera(world);
-
+    let player = create_player(world);
+    let camera = create_camera(world, player);
     world.insert(ActiveCamera(camera));
-
-    let _player = create_player(world);
 
     create_ground(world);
   }
@@ -103,14 +97,19 @@ fn setup_physics(world: &mut World, _gravity_vec: &Vector3<f32>) {
   physics_world.world_server().set_gravity(&gravity_vec);
 }
 
-fn create_camera(world: &mut World) -> Entity {
+fn create_camera(world: &mut World, parent: Entity) -> Entity {
   let mut transform = Transform::default();
-  transform.set_translation_xyz(50.0, 500.0, 10.0);
+  transform.set_translation_z(10.0);
+
+  let (width, height) = {
+    let dim = world.read_resource::<ScreenDimensions>();
+    (dim.width(), dim.height())
+  };
 
   world
     .create_entity()
-    .with(Camera::standard_2d(VIEW_WIDTH, VIEW_HEIGHT))
     .with(transform)
+    .with(Camera::standard_2d(width, height))
     .build()
 }
 
@@ -152,7 +151,7 @@ fn create_player(world: &mut World) -> Entity {
   );
 
   let mut transform = Transform::default();
-  transform.set_translation_xyz(50.0, 500.0, 0.0);
+  transform.set_translation_xyz(50.0, 500.0, 1.0);
 
   let shape_desc = ShapeDesc::Capsule {
     half_height: 16.0,
