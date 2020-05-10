@@ -14,7 +14,7 @@ use amethyst::{
 use amethyst_physics::prelude::*;
 
 use crate::{
-  components::actor::{actions::*, ACTOR_CONTACTS_TO_REPORT},
+  components::actor::{action::*, ACTOR_CONTACTS_TO_REPORT},
   components::*,
   resources::*,
   states::*,
@@ -32,7 +32,7 @@ impl SimpleState for GameplayState {
     let world = data.world;
 
     world.register::<PlayerActor>();
-    world.register::<ActorData>();
+    world.register::<Controllable>();
     world.register::<ControlState>();
     world.register::<AnimatedSprite>();
     world.register::<DebugShape>();
@@ -126,27 +126,27 @@ fn create_player(world: &mut World) -> Entity {
 
   let mut animated_sprite = AnimatedSprite::default();
   animated_sprite.add_animation(
-    ACTION_IDLE,
+    ActorAction::Idle,
     Animation::new(0, 4, Duration::from_millis(300), true),
   );
   animated_sprite.add_animation(
-    ACTION_RUN,
+    ActorAction::Run,
     Animation::new(4, 8, Duration::from_millis(150), true),
   );
   animated_sprite.add_animation(
-    ACTION_WALK,
+    ActorAction::Walk,
     Animation::new(34, 8, Duration::from_millis(300), true),
   );
   animated_sprite.add_animation(
-    ACTION_JUMP,
+    ActorAction::Jump,
     Animation::new(42, 4, Duration::from_millis(50), false),
   );
   animated_sprite.add_animation(
-    ACTION_STAND,
+    ActorAction::Stand,
     Animation::new(63, 1, Duration::from_millis(50), false),
   );
   animated_sprite.add_animation(
-    ACTION_FALL,
+    ActorAction::Fall,
     Animation::new(63, 1, Duration::from_millis(50), false),
   );
 
@@ -177,7 +177,7 @@ fn create_player(world: &mut World) -> Entity {
     .with(animated_sprite)
     .with(sprite_render)
     .with(ControlState::default())
-    .with(ActorData::default())
+    .with(Controllable::default())
     .with(PlayerActor)
     .build()
 }

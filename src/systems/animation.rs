@@ -7,7 +7,7 @@ use amethyst::{
   renderer::SpriteRender,
 };
 
-use crate::components::{actor::actions::*, ActorData, AnimatedSprite};
+use crate::components::{actor::action::ActorAction, AnimatedSprite, Controllable};
 
 #[derive(SystemDesc)]
 pub struct AnimationSystem;
@@ -15,7 +15,7 @@ pub struct AnimationSystem;
 impl<'s> System<'s> for AnimationSystem {
   type SystemData = (
     WriteStorage<'s, Transform>,
-    ReadStorage<'s, ActorData>,
+    ReadStorage<'s, Controllable>,
     WriteStorage<'s, SpriteRender>,
     WriteStorage<'s, AnimatedSprite>,
   );
@@ -56,7 +56,7 @@ impl<'s> System<'s> for AnimationSystem {
               animation.current = 0;
             } else {
               animation.deactivate();
-              animated_sprite.current_action = ACTION_IDLE;
+              animated_sprite.current_action = ActorAction::Idle;
             }
           } else {
             animation.current += 1;

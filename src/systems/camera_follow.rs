@@ -8,7 +8,7 @@ use amethyst::{
 use amethyst_physics::PhysicsTime;
 
 use crate::{
-  components::{ActorData, PlayerActor},
+  components::{Controllable, PlayerActor},
   resources::ActiveCamera,
 };
 
@@ -28,7 +28,7 @@ pub struct CameraFollowSystem;
 impl<'s> System<'s> for CameraFollowSystem {
   type SystemData = (
     WriteStorage<'s, Transform>,
-    ReadStorage<'s, ActorData>,
+    ReadStorage<'s, Controllable>,
     ReadStorage<'s, PlayerActor>,
     ReadExpect<'s, ActiveCamera>,
     ReadExpect<'s, ScreenDimensions>,

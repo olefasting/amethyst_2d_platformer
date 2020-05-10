@@ -6,18 +6,20 @@ use amethyst::{
   renderer::SpriteSheet,
 };
 
+use super::action::*;
+
 use crate::Animation;
 
 #[derive(Debug, Clone)]
 pub struct AnimatedSprite {
   pub sprite_sheet_handle: Option<Handle<SpriteSheet>>,
-  pub animations: HashMap<&'static str, Animation>,
-  pub current_action: &'static str,
+  pub animations: HashMap<ActorAction, Animation>,
+  pub current_action: ActorAction,
   pub last_change: Instant,
 }
 
 impl AnimatedSprite {
-  pub fn add_animation(&mut self, action: &'static str, animation: Animation) {
+  pub fn add_animation(&mut self, action: ActorAction, animation: Animation) {
     self.animations.insert(action, animation);
   }
 }
@@ -27,7 +29,7 @@ impl Default for AnimatedSprite {
     Self {
       sprite_sheet_handle: None,
       animations: HashMap::new(),
-      current_action: "",
+      current_action: ActorAction::default(),
       last_change: Instant::now(),
     }
   }

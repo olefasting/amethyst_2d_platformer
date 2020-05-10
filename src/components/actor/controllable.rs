@@ -2,7 +2,7 @@ use amethyst::ecs::{Component, VecStorage};
 
 use amethyst_physics::prelude::*;
 
-use super::actions::*;
+use super::action::*;
 
 const DEFAULT_DRAG: f32 = 10.0;
 
@@ -23,7 +23,7 @@ pub enum ControlMode {
 }
 
 #[derive(Debug, Clone)]
-pub struct ActorData {
+pub struct Controllable {
   pub drag: f32,
   pub ground_acceleration: f32,
   pub ground_max_speed: f32,
@@ -33,12 +33,12 @@ pub struct ActorData {
   pub jump_cnt: u32,
   pub max_jump_cnt: u32,
   pub facing_right: bool,
-  pub current_action: &'static str,
+  pub current_action: ActorAction,
   pub control_mode: ControlMode,
   contact_events: Vec<ContactEvent<f32>>,
 }
 
-impl ActorData {
+impl Controllable {
   pub fn contact_events_as_ref(&mut self) -> &Vec<ContactEvent<f32>> {
     &self.contact_events
   }
@@ -48,7 +48,7 @@ impl ActorData {
   }
 }
 
-impl Default for ActorData {
+impl Default for Controllable {
   fn default() -> Self {
     Self {
       drag: DEFAULT_DRAG,
@@ -60,13 +60,13 @@ impl Default for ActorData {
       jump_cnt: 0,
       max_jump_cnt: 1,
       facing_right: true,
-      current_action: ACTION_IDLE,
+      current_action: ActorAction::None,
       control_mode: ControlMode::Realistic,
       contact_events: Vec::with_capacity(ACTOR_CONTACTS_TO_REPORT),
     }
   }
 }
 
-impl Component for ActorData {
+impl Component for Controllable {
   type Storage = VecStorage<Self>;
 }

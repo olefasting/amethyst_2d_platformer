@@ -8,7 +8,7 @@ use amethyst_physics::prelude::*;
 
 use crate::{
   components::{
-    actor::{actions::*, ActorData, ControlMode},
+    actor::{action::*, ControlMode, Controllable},
     physics::COLLISION_GROUP_GROUND,
     ControlState,
   },
@@ -16,11 +16,11 @@ use crate::{
 };
 
 #[derive(SystemDesc)]
-pub struct ActorControlSystem;
+pub struct KinematicSystem;
 
-impl<'s> System<'s> for ActorControlSystem {
+impl<'s> System<'s> for KinematicSystem {
   type SystemData = (
-    WriteStorage<'s, ActorData>,
+    WriteStorage<'s, Controllable>,
     ReadStorage<'s, ControlState>,
     ReadStorage<'s, PhysicsHandle<PhysicsRigidBodyTag>>,
     ReadExpect<'s, WorldGravity>,
@@ -69,7 +69,7 @@ impl<'s> System<'s> for ActorControlSystem {
 
       if is_grounded {
         actor_data.jump_cnt = 0;
-        actor_data.current_action = ACTION_IDLE;
+        actor_data.current_action = ActorAction::Idle;
       } else {
         // TODO: Fix gravity and terminal velocity so that it works bi-directionally on all axes
         let new_y = velocity.y + gravity.0.y;
@@ -85,7 +85,7 @@ impl<'s> System<'s> for ActorControlSystem {
       if control_state.jump && actor_data.jump_cnt < actor_data.max_jump_cnt {
         actor_data.jump_cnt += 1;
         velocity.y = actor_data.jump_power;
-        actor_data.current_action = ACTION_JUMP;
+        actor_data.current_action = ActorAction::Jump;
       }
 
       if let ControlMode::Realistic = actor_data.control_mode {
@@ -166,12 +166,12 @@ impl<'s> System<'s> for ActorControlSystem {
       if is_grounded {
         if control_state.left || control_state.right {
           actor_data.facing_right = control_state.right;
-          actor_data.current_action = ACTION_RUN;
+          actor_data.current_action = ActorAction::Run;
         } else {
-          actor_data.current_action = ACTION_IDLE;
+          actor_data.current_action = ActorAction::Idle;
         }
       } else {
-        actor_data.current_action = ACTION_FALL;
+        actor_data.current_action = ActorAction::Fall;
       }
 
       physics_world

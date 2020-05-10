@@ -57,8 +57,8 @@ fn main() -> amethyst::Result<()> {
             vec![String::from("input_system")],
         )
         .with_pre_physics(
-            ActorControlSystem,
-            String::from("actor_control_system"),
+            KinematicSystem,
+            String::from("kinematic_system"),
             vec![
                 String::from("input_system"),
                 String::from("local_player_system"),
@@ -67,7 +67,7 @@ fn main() -> amethyst::Result<()> {
         .with_post_physics(
             DebugShapesSystem,
             String::from("debug_shapes_system"),
-            vec![String::from("actor_control_system")],
+            vec![String::from("kinematic_system")],
         );
 
     let game_data = GameDataBuilder::default()
