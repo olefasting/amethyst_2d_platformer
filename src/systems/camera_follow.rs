@@ -31,18 +31,23 @@ impl<'s> System<'s> for CameraFollowSystem {
     for (transform, _) in (&transforms, &player_actors).join() {
       let player_translation = transform.translation().clone();
 
+      /*
       if camera_translation.x < player_translation.x - CAMERA_MOVE_THRESHOLD
         || camera_translation.x > player_translation.x + CAMERA_MOVE_THRESHOLD
       {
         // TODO: Lerp camera position
-        camera_translation.x = player_translation.x
+        // camera_translation.x = player_translation.x
       }
       if camera_translation.y < player_translation.y - CAMERA_MOVE_THRESHOLD
         || camera_translation.y > player_translation.y + CAMERA_MOVE_THRESHOLD
       {
         // TODO: Lerp camera position
-        camera_translation.y = player_translation.y
+        // camera_translation.y = player_translation.y
       }
+      */
+
+      camera_translation.x = player_translation.x;
+      camera_translation.y = player_translation.y;
     }
 
     transforms
