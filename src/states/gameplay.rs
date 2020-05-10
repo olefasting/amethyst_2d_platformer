@@ -2,7 +2,7 @@ use std::time::Duration;
 
 use amethyst::{
   assets::{AssetStorage, Handle, Loader},
-  core::{ecs::Entity, math::Vector3, Parent, Transform},
+  core::{ecs::Entity, math::Vector3, Transform},
   prelude::*,
   renderer::{
     debug_drawing::{DebugLines, DebugLinesComponent, DebugLinesParams},
@@ -14,11 +14,7 @@ use amethyst::{
 use amethyst_physics::prelude::*;
 
 use crate::{
-  components::actor::{action::*, ACTOR_CONTACTS_TO_REPORT},
-  components::*,
-  resources::*,
-  states::*,
-  Animation,
+  components::actor::ACTOR_CONTACTS_TO_REPORT, components::*, resources::*, states::*, Animation,
 };
 
 const WORLD_GRAVITY: f32 = 64.0;
@@ -53,8 +49,11 @@ impl SimpleState for GameplayState {
     )));
 
     setup_physics(world, &gravity_vec);
-    let player = create_player(world);
-    let camera = create_camera(world, player);
+
+    let _player = create_player(world);
+
+    let camera = create_camera(world);
+
     world.insert(ActiveCamera(camera));
 
     create_ground(world);
@@ -97,7 +96,7 @@ fn setup_physics(world: &mut World, _gravity_vec: &Vector3<f32>) {
   physics_world.world_server().set_gravity(&gravity_vec);
 }
 
-fn create_camera(world: &mut World, parent: Entity) -> Entity {
+fn create_camera(world: &mut World) -> Entity {
   let mut transform = Transform::default();
   transform.set_translation_z(10.0);
 

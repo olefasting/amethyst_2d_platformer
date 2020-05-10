@@ -1,7 +1,4 @@
-use amethyst::{
-  core::math::{Vector2, Vector3},
-  ecs::Entity,
-};
+use amethyst::{core::math::Vector3, ecs::Entity};
 
 use crate::states::StateId;
 

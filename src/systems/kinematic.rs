@@ -1,7 +1,6 @@
 use amethyst::{
-  core::{math::Vector3, Transform},
   derive::SystemDesc,
-  ecs::{Join, Read, ReadExpect, ReadStorage, System, SystemData, WriteStorage},
+  ecs::{Join, ReadExpect, ReadStorage, System, SystemData, WriteStorage},
 };
 
 use amethyst_physics::prelude::*;
@@ -38,7 +37,7 @@ impl<'s> System<'s> for KinematicSystem {
       gravity,
       terminal_velocity,
       physics_world,
-      physics_time,
+      _physics_time,
     ): Self::SystemData,
   ) {
     for (actor_data, control_state, rigid_body_tag) in

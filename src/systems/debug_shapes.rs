@@ -1,10 +1,7 @@
 use amethyst::{
-  core::{
-    math::{Isometry3, Point3, Vector3},
-    SystemDesc, Time, Transform,
-  },
+  core::Transform,
   derive::SystemDesc,
-  ecs::{Join, ReadExpect, ReadStorage, System, SystemData, Write},
+  ecs::{Join, ReadStorage, System, SystemData, Write},
   renderer::debug_drawing::DebugLines,
 };
 

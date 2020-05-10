@@ -1,7 +1,7 @@
 use amethyst::{
-  core::{math::Vector3, Transform},
+  core::Transform,
   derive::SystemDesc,
-  ecs::{Entities, Join, ReadExpect, ReadStorage, System, SystemData, WriteStorage},
+  ecs::{Join, ReadExpect, ReadStorage, System, SystemData, WriteStorage},
   window::ScreenDimensions,
 };
 
