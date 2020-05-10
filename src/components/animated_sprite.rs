@@ -6,9 +6,7 @@ use amethyst::{
   renderer::SpriteSheet,
 };
 
-use super::action::*;
-
-use crate::Animation;
+use super::{action::*, Animation};
 
 #[derive(Debug, Clone)]
 pub struct AnimatedSprite {

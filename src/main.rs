@@ -14,14 +14,12 @@ use amethyst_physics::PhysicsBundle;
 
 use amethyst_nphysics::NPhysicsBackend;
 
-pub mod animation;
 pub mod components;
 pub mod resources;
 pub mod states;
 pub mod systems;
-pub mod util;
 
-use animation::*;
+use components::animation::*;
 // use components::*;
 // use resources::*;
 use states::*;

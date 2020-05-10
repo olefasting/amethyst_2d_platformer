@@ -5,7 +5,7 @@ use amethyst::{
   renderer::debug_drawing::DebugLines,
 };
 
-use crate::{components::DebugShape, util};
+use crate::components::physics::*;
 
 #[derive(Debug, Default, SystemDesc)]
 pub struct DebugShapesSystem;
@@ -21,7 +21,7 @@ impl<'s> System<'s> for DebugShapesSystem {
     for (transform, debug_shape) in (&transforms, &debug_shapes).join() {
       // FIXME: Check if on screen before draw
       let translation = transform.translation();
-      let points = util::shape_desc_to_points(&debug_shape.desc, true);
+      let points = shape_desc_to_points(&debug_shape.desc, true);
 
       let len = points.len();
       for i in 0..len {
