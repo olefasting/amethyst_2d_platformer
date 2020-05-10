@@ -19,6 +19,8 @@ const VIEW_HEIGHT: f32 = 768.0;
 
 const WORLD_GRAVITY: f32 = 512.0;
 
+const PLAYER_CONTACTS_TO_REPORT: usize = 1024;
+
 #[derive(Debug, Default)]
 pub struct GameplayState;
 
@@ -130,6 +132,10 @@ fn create_player(world: &mut World) -> Entity {
     ACTION_STAND,
     Animation::new(63, 1, Duration::from_millis(50), false),
   );
+  animated_sprite.add_animation(
+    ACTION_FALL,
+    Animation::new(63, 1, Duration::from_millis(50), false),
+  );
 
   let mut transform = Transform::default();
   transform.set_translation_xyz(50.0, 500.0, 0.0);
@@ -141,9 +147,10 @@ fn create_player(world: &mut World) -> Entity {
 
   let collider_shape = CollisionShapeBuilder::new(shape_desc.clone()).build(world);
 
-  let rigid_body = RigidBodyBuilder::new_kinematic_body()
-    .with_own_groups(&[ACTOR_COLLISION_GROUP, PLAYER_COLLISION_GROUP])
-    .with_target_group(TILE_COLLISION_GROUP)
+  let rigid_body = RigidBodyBuilder::new_dynamic_body()
+    .with_own_groups(&[COLLISION_GROUP_ACTOR, COLLISION_GROUP_PLAYER])
+    .with_target_groups(&[COLLISION_GROUP_GROUND, COLLISION_GROUP_ACTOR])
+    .with_contacts_to_report(PLAYER_CONTACTS_TO_REPORT)
     .with_lock_rotation_xyz(true, true, true)
     .build(world);
 
@@ -178,8 +185,8 @@ fn create_ground(world: &mut World) {
     let collider_shape = CollisionShapeBuilder::new(shape_desc.clone()).build(world);
 
     let rigid_body = RigidBodyBuilder::new_static_body()
-      .with_own_group(TILE_COLLISION_GROUP)
-      .with_target_groups(&[ACTOR_COLLISION_GROUP, PLAYER_COLLISION_GROUP])
+      .with_own_group(COLLISION_GROUP_GROUND)
+      .with_target_groups(&[COLLISION_GROUP_ACTOR, COLLISION_GROUP_PLAYER])
       .build(world);
 
     world

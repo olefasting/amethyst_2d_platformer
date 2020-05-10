@@ -8,9 +8,9 @@ use amethyst_physics::prelude::*;
 
 use crate::util;
 
-pub const TILE_COLLISION_GROUP: u8 = 5;
-pub const PLAYER_COLLISION_GROUP: u8 = 6;
-pub const ACTOR_COLLISION_GROUP: u8 = 7;
+pub const COLLISION_GROUP_GROUND: u8 = 5;
+pub const COLLISION_GROUP_PLAYER: u8 = 6;
+pub const COLLISION_GROUP_ACTOR: u8 = 7;
 
 pub struct RigidBodyBuilder {
   desc: RigidBodyDesc<f32>,
@@ -179,7 +179,7 @@ impl Component for DebugShape {
   type Storage = VecStorage<Self>;
 }
 
-fn debug_lines_component(shape_desc: &ShapeDesc<f32>, color: Srgba) -> DebugLinesComponent {
+pub fn debug_lines_component(shape_desc: &ShapeDesc<f32>, color: Srgba) -> DebugLinesComponent {
   let mut debug_lines_component = DebugLinesComponent::new();
 
   let points = util::shape_desc_to_points(shape_desc, true);
@@ -193,5 +193,6 @@ fn debug_lines_component(shape_desc: &ShapeDesc<f32>, color: Srgba) -> DebugLine
       }
     }
   }
+
   debug_lines_component
 }

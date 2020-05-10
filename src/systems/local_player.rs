@@ -32,11 +32,16 @@ impl<'s> System<'s> for LocalPlayerSystem {
         false
       };
 
+      let up = input.action_is_down("up").unwrap_or(false);
+      let down = input.action_is_down("down").unwrap_or(false);
+      let left = input.action_is_down("left").unwrap_or(false);
+      let right = input.action_is_down("right").unwrap_or(false);
+
       control_state.set_all(
-        input.action_is_down("up").unwrap_or(false),
-        input.action_is_down("down").unwrap_or(false),
-        input.action_is_down("left").unwrap_or(false),
-        input.action_is_down("right").unwrap_or(false),
+        up && !down,
+        down && !up,
+        left && !right,
+        right && !left,
         jump,
       );
 
