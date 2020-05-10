@@ -13,6 +13,7 @@ use crate::{
     ControlState,
   },
   resources::WorldGravity,
+  states::gameplay::PLAYER_CONTACTS_TO_REPORT,
 };
 
 #[derive(SystemDesc)]
@@ -45,11 +46,11 @@ impl<'s> System<'s> for ActorControlSystem {
         .rigid_body_server()
         .linear_velocity(rigid_body_tag.get());
 
-      let is_grounded = true;
+      let mut is_grounded = false;
 
-      /*
       // FIXME:: This is a temp solution. Don't reallocate this
-      let mut contact_events: Vec<ContactEvent<f32>> = Vec::with_capacity(1024);
+      let mut contact_events: Vec<ContactEvent<f32>> =
+        Vec::with_capacity(PLAYER_CONTACTS_TO_REPORT);
       physics_world
         .rigid_body_server()
         .contact_events(rigid_body_tag.get(), &mut contact_events);
@@ -64,16 +65,11 @@ impl<'s> System<'s> for ActorControlSystem {
           }
         }
       }
+
       if is_grounded {
-        if velocity.y < 0.0 {
-          velocity.y = 0.0;
-        }
         actor_data.jump_cnt = 0;
         actor_data.current_action = ACTION_IDLE;
-      } else {
-          velocity += world_gravity.0;
-        }
-        */
+      }
 
       if control_state.jump && actor_data.jump_cnt < actor_data.max_jump_cnt {
         actor_data.jump_cnt += 1;

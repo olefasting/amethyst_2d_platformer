@@ -19,7 +19,7 @@ const VIEW_HEIGHT: f32 = 768.0;
 
 const WORLD_GRAVITY: f32 = 512.0;
 
-const PLAYER_CONTACTS_TO_REPORT: usize = 1024;
+pub const PLAYER_CONTACTS_TO_REPORT: usize = 512;
 
 #[derive(Debug, Default)]
 pub struct GameplayState;
