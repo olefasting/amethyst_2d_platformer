@@ -47,7 +47,12 @@ impl<'s> System<'s> for CameraFollowSystem {
 
     // TODO: LIMIT EXTENTS
     let (short_vertical_extent, long_vertical_extent) = {
-      let half_extent = (screen_dimensions.height() * VERTICAL_BOUNDS_SCREEN_FRACTION) / 2.0;
+      let height = screen_dimensions.height() * VERTICAL_BOUNDS_SCREEN_FRACTION;
+      let half_extent = if height > VERTICAL_BOUNDS_MAX_PIXELS {
+        VERTICAL_BOUNDS_MAX_PIXELS / 2.0
+      } else {
+        height / 2.0
+      };
       (
         half_extent / VERTICAL_BOUNDS_DIRECTION_MODIFIER,
         half_extent * (half_extent * VERTICAL_BOUNDS_DIRECTION_MODIFIER),
@@ -55,7 +60,12 @@ impl<'s> System<'s> for CameraFollowSystem {
     };
 
     let (short_horizontal_extent, long_horizontal_extent) = {
-      let half_extent = (screen_dimensions.width() * HORIZONTAL_BOUNDS_SCREEN_FRACTION) / 2.0;
+      let width = screen_dimensions.width() * HORIZONTAL_BOUNDS_SCREEN_FRACTION;
+      let half_extent = if width > HORIZONTAL_BOUNDS_MAX_PIXELS {
+        HORIZONTAL_BOUNDS_MAX_PIXELS / 2.0
+      } else {
+        width / 2.0
+      };
       (
         half_extent / HORIZONTAL_BOUNDS_DIRECTION_MODIFIER,
         half_extent + (half_extent * HORIZONTAL_BOUNDS_DIRECTION_MODIFIER),
