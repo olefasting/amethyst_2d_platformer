@@ -93,7 +93,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "amethyst-2d-platformer"
+name = "amethyst_2d_platformer"
 version = "0.0.1"
 dependencies = [
  "amethyst",
