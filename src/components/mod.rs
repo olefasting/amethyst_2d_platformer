@@ -4,7 +4,6 @@ pub mod control_state;
 pub mod controllable;
 pub mod local_player;
 pub mod physics;
-pub mod shape;
 
 pub use animated_sprite::*;
 pub use animation::*;

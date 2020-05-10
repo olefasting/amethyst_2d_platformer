@@ -15,6 +15,7 @@ use amethyst_physics::PhysicsBundle;
 use amethyst_nphysics::NPhysicsBackend;
 
 pub mod components;
+pub mod entities;
 pub mod resources;
 pub mod states;
 pub mod systems;
