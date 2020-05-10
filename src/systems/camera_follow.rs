@@ -2,13 +2,15 @@ use amethyst::{
   core::Transform,
   derive::SystemDesc,
   ecs::{Join, ReadExpect, ReadStorage, System, SystemData, WriteStorage},
-  renderer::ActiveCamera,
   window::ScreenDimensions,
 };
 
 use amethyst_physics::PhysicsTime;
 
-use crate::components::{Controllable, LocalPlayer};
+use crate::{
+  components::{Controllable, LocalPlayer},
+  resources::ActiveCamera,
+};
 
 const HORIZONTAL_BOUNDS_SCREEN_FRACTION: f32 = 0.33;
 const HORIZONTAL_BOUNDS_DIRECTION_MODIFIER: f32 = 0.25;
@@ -37,11 +39,8 @@ impl<'s> System<'s> for CameraFollowSystem {
     &mut self,
     (mut transforms, actor_datas, local_players, active_camera, screen_dimensions, physics_time): Self::SystemData,
   ) {
-    let camera = active_camera
-      .entity
-      .expect("Entity of active camera could not be found!");
     let mut camera_translation = transforms
-      .get(camera)
+      .get(active_camera.0)
       .expect("Transform of active camera could not be found!")
       .translation()
       .clone();
@@ -119,7 +118,7 @@ impl<'s> System<'s> for CameraFollowSystem {
     }
 
     transforms
-      .get_mut(camera)
+      .get_mut(active_camera.0)
       .expect("Transform of active camera could not be found!")
       .set_translation(camera_translation);
   }
