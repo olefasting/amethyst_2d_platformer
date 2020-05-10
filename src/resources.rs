@@ -16,7 +16,6 @@ pub struct WorldGravity(pub Vector3<f32>);
 
 #[derive(Debug, Clone)]
 pub struct WorldTerminalVelocity(pub Vector3<f32>);
-
 #[derive(Debug, Clone)]
 pub struct ViewSize(pub Vector2<f32>);
 

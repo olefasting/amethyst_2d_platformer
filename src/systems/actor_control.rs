@@ -8,12 +8,11 @@ use amethyst_physics::prelude::*;
 
 use crate::{
   components::{
-    actor::{actions::*, ActorData},
+    actor::{actions::*, ActorData, ControlMode},
     physics::COLLISION_GROUP_GROUND,
     ControlState,
   },
   resources::{WorldGravity, WorldTerminalVelocity},
-  states::gameplay::PLAYER_CONTACTS_TO_REPORT,
 };
 
 #[derive(SystemDesc)]
@@ -27,6 +26,7 @@ impl<'s> System<'s> for ActorControlSystem {
     ReadExpect<'s, WorldGravity>,
     ReadExpect<'s, WorldTerminalVelocity>,
     ReadExpect<'s, PhysicsWorld<f32>>,
+    ReadExpect<'s, PhysicsTime>,
   );
 
   fn run(
@@ -38,26 +38,25 @@ impl<'s> System<'s> for ActorControlSystem {
       gravity,
       terminal_velocity,
       physics_world,
+      physics_time,
     ): Self::SystemData,
   ) {
     for (actor_data, control_state, rigid_body_tag) in
       (&mut actor_datas, &control_states, &rigid_body_tags).join()
     {
-      // if let BodyMode::Kinematic = physics_world.rigid_body_server().mode(rigid_body_tag.get()) {
       let mut velocity = physics_world
         .rigid_body_server()
         .linear_velocity(rigid_body_tag.get());
 
       let mut is_grounded = false;
 
-      // FIXME:: This is a temp solution. Don't reallocate this
-      let mut contact_events: Vec<ContactEvent<f32>> =
-        Vec::with_capacity(PLAYER_CONTACTS_TO_REPORT);
+      actor_data.contact_events_as_mut().clear();
+
       physics_world
         .rigid_body_server()
-        .contact_events(rigid_body_tag.get(), &mut contact_events);
+        .contact_events(rigid_body_tag.get(), actor_data.contact_events_as_mut());
 
-      for event in contact_events {
+      for event in actor_data.contact_events_as_mut() {
         for group in physics_world
           .rigid_body_server()
           .belong_to(event.other_body)
@@ -89,56 +88,88 @@ impl<'s> System<'s> for ActorControlSystem {
         actor_data.current_action = ACTION_JUMP;
       }
 
-      let max_speed_x = if is_grounded {
-        actor_data.ground_max_speed
-      } else {
-        actor_data.air_max_speed
-      };
-
-      if control_state.left {
-        if is_grounded {
-          velocity.x -= actor_data.ground_acceleration
-        } else {
-          velocity.x -= actor_data.air_acceleration
-        }
-      } else if control_state.right {
-        if is_grounded {
-          velocity.x += actor_data.ground_acceleration
-        } else {
-          velocity.x += actor_data.air_acceleration
-        }
-      } else {
-        if velocity.x > 0.0 {
-          velocity.x -= actor_data.drag;
-          if velocity.x < 0.0 {
-            velocity.x = 0.0;
+      if let ControlMode::Realistic = actor_data.control_mode {
+        // Realistic movement
+        if control_state.left {
+          // Move left
+          actor_data.facing_right = false;
+          if is_grounded {
+            let new_x = velocity.x - actor_data.ground_acceleration;
+            velocity.x = if new_x < -actor_data.ground_max_speed {
+              -actor_data.ground_max_speed
+            } else {
+              new_x
+            };
+          } else {
+            let new_x = velocity.x - actor_data.air_acceleration;
+            velocity.x = if new_x < -actor_data.air_max_speed {
+              -actor_data.air_max_speed
+            } else {
+              new_x
+            };
           }
-        } else if velocity.x < 0.0 {
-          velocity.x += actor_data.drag;
+        } else if control_state.right {
+          // Move right
+          actor_data.facing_right = true;
+          if is_grounded {
+            let new_x = velocity.x + actor_data.ground_acceleration;
+            velocity.x = if new_x > actor_data.ground_max_speed {
+              actor_data.ground_max_speed
+            } else {
+              new_x
+            };
+          } else {
+            let new_x = velocity.x + actor_data.air_acceleration;
+            velocity.x = if new_x > actor_data.air_max_speed {
+              actor_data.air_max_speed
+            } else {
+              new_x
+            };
+          }
+        } else {
+          // No move
           if velocity.x > 0.0 {
-            velocity.x = 0.0;
+            velocity.x -= actor_data.drag;
+            if velocity.x < 0.0 {
+              velocity.x = 0.0;
+            }
+          } else if velocity.x < 0.0 {
+            velocity.x += actor_data.drag;
+            if velocity.x > 0.0 {
+              velocity.x = 0.0;
+            }
           }
         }
+      } else {
+        // Instant  movement
+        if control_state.left {
+          // Move left
+          velocity.x = if is_grounded {
+            -actor_data.ground_max_speed
+          } else {
+            -actor_data.air_max_speed
+          }
+        } else if control_state.right {
+          // Move right
+          velocity.x = if is_grounded {
+            actor_data.ground_max_speed
+          } else {
+            actor_data.air_max_speed
+          }
+        } else {
+          // No move
+          velocity.x = 0.0;
+        }
       }
 
-      if velocity.x > max_speed_x {
-        velocity.x = max_speed_x;
-      } else if velocity.x < -max_speed_x {
-        velocity.x = -max_speed_x;
-      }
-
-      if control_state.right {
-        actor_data.facing_right = true;
-        if is_grounded {
+      // Animation
+      if is_grounded {
+        if control_state.left || control_state.right {
+          actor_data.facing_right = control_state.right;
           actor_data.current_action = ACTION_RUN;
+        } else {
+          actor_data.current_action = ACTION_IDLE;
         }
-      } else if control_state.left {
-        actor_data.facing_right = false;
-        if is_grounded {
-          actor_data.current_action = ACTION_RUN;
-        }
-      } else if is_grounded {
-        actor_data.current_action = ACTION_IDLE;
       } else {
         actor_data.current_action = ACTION_FALL;
       }
@@ -148,5 +179,4 @@ impl<'s> System<'s> for ActorControlSystem {
         .set_linear_velocity(rigid_body_tag.get(), &velocity);
     }
   }
-  // }
 }

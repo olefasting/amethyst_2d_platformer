@@ -12,15 +12,19 @@ use amethyst::{
 
 use amethyst_physics::prelude::*;
 
-use crate::{components::actor::actions::*, components::*, resources::*, states::*, Animation};
+use crate::{
+  components::actor::{actions::*, ACTOR_CONTACTS_TO_REPORT},
+  components::*,
+  resources::*,
+  states::*,
+  Animation,
+};
 
 const VIEW_WIDTH: f32 = 1024.0;
 const VIEW_HEIGHT: f32 = 768.0;
 
 const WORLD_GRAVITY: f32 = 64.0;
 const WORLD_TERMINAL_VELOCITY: f32 = 300.0;
-
-pub const PLAYER_CONTACTS_TO_REPORT: usize = 512;
 
 #[derive(Debug, Default)]
 pub struct GameplayState;
@@ -160,7 +164,7 @@ fn create_player(world: &mut World) -> Entity {
   let rigid_body = RigidBodyBuilder::new_dynamic_body()
     .with_own_groups(&[COLLISION_GROUP_ACTOR, COLLISION_GROUP_PLAYER])
     .with_target_groups(&[COLLISION_GROUP_GROUND, COLLISION_GROUP_ACTOR])
-    .with_contacts_to_report(PLAYER_CONTACTS_TO_REPORT)
+    .with_contacts_to_report(ACTOR_CONTACTS_TO_REPORT)
     .with_lock_rotation_xyz(true, true, true)
     .build(world);
 
