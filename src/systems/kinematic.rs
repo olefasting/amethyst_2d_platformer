@@ -7,9 +7,7 @@ use amethyst_physics::prelude::*;
 
 use crate::{
   components::{
-    actor::{action::*, ControlMode, Controllable},
-    physics::COLLISION_GROUP_GROUND,
-    ControlState,
+    physics::COLLISION_GROUP_GROUND, ActorAction, ControlMode, ControlState, Controllable,
   },
   resources::{WorldGravity, WorldTerminalVelocity},
 };

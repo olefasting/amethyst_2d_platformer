@@ -7,7 +7,7 @@ use amethyst::{
   renderer::SpriteRender,
 };
 
-use crate::components::{actor::action::ActorAction, AnimatedSprite, Controllable};
+use crate::components::{ActorAction, AnimatedSprite, Controllable};
 
 #[derive(SystemDesc)]
 pub struct AnimationSystem;

@@ -13,9 +13,7 @@ use amethyst::{
 
 use amethyst_physics::prelude::*;
 
-use crate::{
-  components::actor::ACTOR_CONTACTS_TO_REPORT, components::*, resources::*, states::*, Animation,
-};
+use crate::{components::ACTOR_CONTACTS_TO_REPORT, components::*, resources::*, states::*};
 
 const WORLD_GRAVITY: f32 = 64.0;
 const WORLD_TERMINAL_VELOCITY: f32 = 300.0;
