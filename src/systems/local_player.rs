@@ -2,7 +2,7 @@ use amethyst::derive::SystemDesc;
 use amethyst::ecs::{Join, Read, ReadStorage, System, SystemData, WriteStorage};
 use amethyst::input::{InputHandler, StringBindings};
 
-use crate::components::{ControlState, PlayerActor};
+use crate::components::{ControlState, LocalPlayer};
 
 #[derive(SystemDesc)]
 pub struct LocalPlayerSystem {
@@ -11,13 +11,13 @@ pub struct LocalPlayerSystem {
 
 impl<'s> System<'s> for LocalPlayerSystem {
   type SystemData = (
-    ReadStorage<'s, PlayerActor>,
+    ReadStorage<'s, LocalPlayer>,
     WriteStorage<'s, ControlState>,
     Read<'s, InputHandler<StringBindings>>,
   );
 
-  fn run(&mut self, (player_actors, mut control_states, input): Self::SystemData) {
-    for (_, control_state) in (&player_actors, &mut control_states).join() {
+  fn run(&mut self, (local_players, mut control_states, input): Self::SystemData) {
+    for (_, control_state) in (&local_players, &mut control_states).join() {
       control_state.clear();
 
       let jump = if input.action_is_down("jump").unwrap_or(false) {

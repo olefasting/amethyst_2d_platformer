@@ -8,7 +8,7 @@ use amethyst::{
 use amethyst_physics::PhysicsTime;
 
 use crate::{
-  components::{Controllable, PlayerActor},
+  components::{Controllable, LocalPlayer},
   resources::ActiveCamera,
 };
 
@@ -29,7 +29,7 @@ impl<'s> System<'s> for CameraFollowSystem {
   type SystemData = (
     WriteStorage<'s, Transform>,
     ReadStorage<'s, Controllable>,
-    ReadStorage<'s, PlayerActor>,
+    ReadStorage<'s, LocalPlayer>,
     ReadExpect<'s, ActiveCamera>,
     ReadExpect<'s, ScreenDimensions>,
     ReadExpect<'s, PhysicsTime>,
@@ -37,7 +37,7 @@ impl<'s> System<'s> for CameraFollowSystem {
 
   fn run(
     &mut self,
-    (mut transforms, actor_datas, player_actors, active_camera, screen_dimensions, physics_time): Self::SystemData,
+    (mut transforms, actor_datas, local_players, active_camera, screen_dimensions, physics_time): Self::SystemData,
   ) {
     let mut camera_translation = transforms
       .get(active_camera.0)
@@ -72,7 +72,7 @@ impl<'s> System<'s> for CameraFollowSystem {
       )
     };
 
-    for (transform, actor_data, _) in (&transforms, &actor_datas, &player_actors).join() {
+    for (transform, actor_data, _) in (&transforms, &actor_datas, &local_players).join() {
       let player_translation = transform.translation();
 
       let (up_threshold, down_threshold) = {

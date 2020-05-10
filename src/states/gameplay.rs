@@ -25,7 +25,7 @@ impl SimpleState for GameplayState {
   fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
     let world = data.world;
 
-    world.register::<PlayerActor>();
+    world.register::<LocalPlayer>();
     world.register::<Controllable>();
     world.register::<ControlState>();
     world.register::<AnimatedSprite>();
@@ -123,27 +123,27 @@ fn create_player(world: &mut World) -> Entity {
 
   let mut animated_sprite = AnimatedSprite::default();
   animated_sprite.add_animation(
-    ActorAction::Idle,
+    ControlAction::Idle,
     Animation::new(0, 4, Duration::from_millis(300), true),
   );
   animated_sprite.add_animation(
-    ActorAction::Run,
+    ControlAction::Run,
     Animation::new(4, 8, Duration::from_millis(150), true),
   );
   animated_sprite.add_animation(
-    ActorAction::Walk,
+    ControlAction::Walk,
     Animation::new(34, 8, Duration::from_millis(300), true),
   );
   animated_sprite.add_animation(
-    ActorAction::Jump,
+    ControlAction::Jump,
     Animation::new(42, 4, Duration::from_millis(50), false),
   );
   animated_sprite.add_animation(
-    ActorAction::Stand,
+    ControlAction::Stand,
     Animation::new(63, 1, Duration::from_millis(50), false),
   );
   animated_sprite.add_animation(
-    ActorAction::Fall,
+    ControlAction::Fall,
     Animation::new(63, 1, Duration::from_millis(50), false),
   );
 
@@ -175,7 +175,7 @@ fn create_player(world: &mut World) -> Entity {
     .with(sprite_render)
     .with(ControlState::default())
     .with(Controllable::default())
-    .with(PlayerActor)
+    .with(LocalPlayer)
     .build()
 }
 

@@ -3,7 +3,7 @@ use amethyst::ecs::{Component, VecStorage};
 use amethyst_physics::prelude::*;
 
 #[derive(Debug, Copy, Clone, Hash, Eq)]
-pub enum ActorAction {
+pub enum ControlAction {
   None,
   Stand,
   Idle,
@@ -17,13 +17,13 @@ pub enum ActorAction {
   SecondaryAttack,
 }
 
-impl Default for ActorAction {
+impl Default for ControlAction {
   fn default() -> Self {
     Self::None
   }
 }
 
-impl ToString for ActorAction {
+impl ToString for ControlAction {
   fn to_string(&self) -> String {
     match self {
       Self::None => String::from("action_none"),
@@ -41,7 +41,7 @@ impl ToString for ActorAction {
   }
 }
 
-impl From<&str> for ActorAction {
+impl From<&str> for ControlAction {
   fn from(s: &str) -> Self {
     match s {
       "action_stand" => Self::Stand,
@@ -58,8 +58,8 @@ impl From<&str> for ActorAction {
   }
 }
 
-impl PartialEq for ActorAction {
-  fn eq(&self, other: &ActorAction) -> bool {
+impl PartialEq for ControlAction {
+  fn eq(&self, other: &ControlAction) -> bool {
     self.to_string() == other.to_string()
   }
 }
@@ -93,7 +93,7 @@ pub struct Controllable {
   pub jump_cnt: u32,
   pub max_jump_cnt: u32,
   pub facing_right: bool,
-  pub current_action: ActorAction,
+  pub current_action: ControlAction,
   pub control_mode: ControlMode,
   contact_events: Vec<ContactEvent<f32>>,
 }
@@ -120,7 +120,7 @@ impl Default for Controllable {
       jump_cnt: 0,
       max_jump_cnt: 1,
       facing_right: true,
-      current_action: ActorAction::None,
+      current_action: ControlAction::None,
       control_mode: ControlMode::Realistic,
       contact_events: Vec::with_capacity(ACTOR_CONTACTS_TO_REPORT),
     }

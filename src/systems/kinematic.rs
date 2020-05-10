@@ -7,7 +7,7 @@ use amethyst_physics::prelude::*;
 
 use crate::{
   components::{
-    physics::COLLISION_GROUP_GROUND, ActorAction, ControlMode, ControlState, Controllable,
+    physics::COLLISION_GROUP_GROUND, ControlAction, ControlMode, ControlState, Controllable,
   },
   resources::{WorldGravity, WorldTerminalVelocity},
 };
@@ -66,7 +66,7 @@ impl<'s> System<'s> for KinematicSystem {
 
       if is_grounded {
         actor_data.jump_cnt = 0;
-        actor_data.current_action = ActorAction::Idle;
+        actor_data.current_action = ControlAction::Idle;
       } else {
         // TODO: Fix gravity and terminal velocity so that it works bi-directionally on all axes
         let new_y = velocity.y + gravity.0.y;
@@ -82,7 +82,7 @@ impl<'s> System<'s> for KinematicSystem {
       if control_state.jump && actor_data.jump_cnt < actor_data.max_jump_cnt {
         actor_data.jump_cnt += 1;
         velocity.y = actor_data.jump_power;
-        actor_data.current_action = ActorAction::Jump;
+        actor_data.current_action = ControlAction::Jump;
       }
 
       if let ControlMode::Realistic = actor_data.control_mode {
@@ -163,12 +163,12 @@ impl<'s> System<'s> for KinematicSystem {
       if is_grounded {
         if control_state.left || control_state.right {
           actor_data.facing_right = control_state.right;
-          actor_data.current_action = ActorAction::Run;
+          actor_data.current_action = ControlAction::Run;
         } else {
-          actor_data.current_action = ActorAction::Idle;
+          actor_data.current_action = ControlAction::Idle;
         }
       } else {
-        actor_data.current_action = ActorAction::Fall;
+        actor_data.current_action = ControlAction::Fall;
       }
 
       physics_world
