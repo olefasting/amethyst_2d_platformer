@@ -19,7 +19,6 @@ pub mod resources;
 pub mod states;
 pub mod systems;
 
-use components::animation::*;
 // use components::*;
 // use resources::*;
 use states::*;
