@@ -12,7 +12,7 @@ use crate::{
     physics::COLLISION_GROUP_GROUND,
     ControlState,
   },
-  resources::WorldGravity,
+  resources::{WorldGravity, WorldTerminalVelocity},
   states::gameplay::PLAYER_CONTACTS_TO_REPORT,
 };
 
@@ -25,6 +25,7 @@ impl<'s> System<'s> for ActorControlSystem {
     ReadStorage<'s, ControlState>,
     ReadStorage<'s, PhysicsHandle<PhysicsRigidBodyTag>>,
     ReadExpect<'s, WorldGravity>,
+    ReadExpect<'s, WorldTerminalVelocity>,
     ReadExpect<'s, PhysicsWorld<f32>>,
   );
 
@@ -34,7 +35,8 @@ impl<'s> System<'s> for ActorControlSystem {
       mut actor_datas,
       control_states,
       rigid_body_tags,
-      world_gravity,
+      gravity,
+      terminal_velocity,
       physics_world,
     ): Self::SystemData,
   ) {
@@ -69,6 +71,16 @@ impl<'s> System<'s> for ActorControlSystem {
       if is_grounded {
         actor_data.jump_cnt = 0;
         actor_data.current_action = ACTION_IDLE;
+      } else {
+        // TODO: Fix gravity and terminal velocity so that it works bi-directionally on all axes
+        let new_y = velocity.y + gravity.0.y;
+        if velocity.y > -terminal_velocity.0.y {
+          if new_y < -terminal_velocity.0.y {
+            velocity.y = -terminal_velocity.0.y;
+          } else {
+            velocity.y = new_y;
+          }
+        }
       }
 
       if control_state.jump && actor_data.jump_cnt < actor_data.max_jump_cnt {
@@ -113,20 +125,6 @@ impl<'s> System<'s> for ActorControlSystem {
         velocity.x = max_speed_x;
       } else if velocity.x < -max_speed_x {
         velocity.x = -max_speed_x;
-      }
-
-      if velocity.y > actor_data.jump_power {
-        velocity.y += actor_data.jump_power
-      }
-
-      if velocity.x < world_gravity.0.x {
-        velocity.x += world_gravity.0.x
-      }
-      if velocity.y < world_gravity.0.y {
-        velocity.y += world_gravity.0.y
-      }
-      if velocity.z < world_gravity.0.z {
-        velocity.z += world_gravity.0.z
       }
 
       if control_state.right {

@@ -17,7 +17,8 @@ use crate::{components::actor::actions::*, components::*, resources::*, states::
 const VIEW_WIDTH: f32 = 1024.0;
 const VIEW_HEIGHT: f32 = 768.0;
 
-const WORLD_GRAVITY: f32 = 512.0;
+const WORLD_GRAVITY: f32 = 64.0;
+const WORLD_TERMINAL_VELOCITY: f32 = 300.0;
 
 pub const PLAYER_CONTACTS_TO_REPORT: usize = 512;
 
@@ -44,8 +45,13 @@ impl SimpleState for GameplayState {
 
     let gravity_vec = Vector3::new(0.0, -WORLD_GRAVITY, 0.0);
     world.insert(WorldGravity(gravity_vec));
+    world.insert(WorldTerminalVelocity(Vector3::new(
+      WORLD_TERMINAL_VELOCITY,
+      WORLD_TERMINAL_VELOCITY,
+      WORLD_TERMINAL_VELOCITY,
+    )));
 
-    setup_physics(world, gravity_vec);
+    setup_physics(world, &gravity_vec);
 
     let camera = create_camera(world);
 
@@ -83,9 +89,13 @@ fn load_sprite_sheet(world: &mut World, name: &str, ext: &str) -> Handle<SpriteS
   )
 }
 
-fn setup_physics(world: &mut World, gravity: Vector3<f32>) {
+fn setup_physics(world: &mut World, _gravity_vec: &Vector3<f32>) {
   let physics_world = world.fetch::<PhysicsWorld<f32>>();
-  let gravity_vec = Vector3::new(0.0, -WORLD_GRAVITY, 0.0);
+  // Not using nphysics gravity until collisions are sorted out, so
+  // that player can be a kinematic body
+  //
+  // physics_world.world_server().set_gravity(gravity_vec);
+  let gravity_vec = Vector3::new(0.0, 0.0, 0.0);
   physics_world.world_server().set_gravity(&gravity_vec);
 }
 

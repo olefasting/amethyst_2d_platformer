@@ -4,13 +4,13 @@ use super::actions::*;
 
 const DEFAULT_DRAG: f32 = 10.0;
 
-const DEFAULT_GROUND_ACCELERATION: f32 = 100.0;
-const DEFAULT_GROUND_MAX_SPEED: f32 = 512.0;
+const DEFAULT_GROUND_ACCELERATION: f32 = 128.0;
+const DEFAULT_GROUND_MAX_SPEED: f32 = 256.0;
 
-const DEFAULT_AIR_ACCELERATION: f32 = 300.0;
-const DEFAULT_AIR_MAX_SPEED: f32 = 512.0;
+const DEFAULT_AIR_ACCELERATION: f32 = 128.0;
+const DEFAULT_AIR_MAX_SPEED: f32 = 256.0;
 
-const DEFAULT_JUMP_POWER: f32 = 50.0;
+const DEFAULT_JUMP_POWER: f32 = 800.0;
 
 #[derive(Debug, Copy, Clone)]
 pub struct ActorData {
