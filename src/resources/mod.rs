@@ -16,9 +16,6 @@ impl Default for StateId {
 pub struct CurrentState(pub StateId);
 
 #[derive(Debug, Clone)]
-pub struct ActiveCamera(pub Entity);
-
-#[derive(Debug, Clone)]
 pub struct WorldGravity(pub Vector3<f32>);
 
 #[derive(Debug, Clone)]

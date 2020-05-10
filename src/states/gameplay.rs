@@ -1,7 +1,10 @@
 use amethyst::{
   core::math::Vector3,
   prelude::*,
-  renderer::debug_drawing::{DebugLines, DebugLinesComponent, DebugLinesParams},
+  renderer::{
+    camera::ActiveCamera,
+    debug_drawing::{DebugLines, DebugLinesComponent, DebugLinesParams},
+  },
 };
 
 use amethyst_physics::prelude::*;
@@ -40,13 +43,8 @@ impl SimpleState for GameplayState {
     )));
 
     setup_physics(world, &gravity_vec);
-
-    let _player = create_player(world);
-
-    let camera = create_camera(world);
-
-    world.insert(ActiveCamera(camera));
-
+    create_player(world);
+    create_camera(world);
     create_level(world);
   }
 
