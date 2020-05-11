@@ -61,15 +61,11 @@ fn main() -> amethyst::Result<()> {
                 String::from("input_system"),
                 String::from("local_player_system"),
             ],
-        )
-        .with_post_physics(
-            DebugShapesSystem,
-            String::from("debug_shapes_system"),
-            vec![String::from("kinematic_system")],
         );
 
     let game_data = GameDataBuilder::default()
         .with(AnimationSystem, "animation_system", &[])
+        //.with(DebugShapesSystem, "debug_shapes_system", &[])
         .with(CameraFollowSystem, "camera_follow_system", &[])
         .with_bundle(TransformBundle::new())?
         .with_bundle(physics_bundle)?

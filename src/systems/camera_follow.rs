@@ -5,7 +5,7 @@ use amethyst::{
   window::ScreenDimensions,
 };
 
-use amethyst_physics::PhysicsTime;
+use amethyst_physics::prelude::*;
 
 use crate::{
   components::{Controllable, LocalPlayer},
@@ -17,7 +17,7 @@ const HORIZONTAL_BOUNDS_DIRECTION_MODIFIER: f32 = 0.25;
 const HORIZONTAL_BOUNDS_MAX_PIXELS: f32 = 800.0;
 
 const VERTICAL_BOUNDS_SCREEN_FRACTION: f32 = 0.33;
-const VERTICAL_BOUNDS_DIRECTION_MODIFIER: f32 = 0.25;
+const VERTICAL_BOUNDS_DIRECTION_MODIFIER: f32 = 0.18;
 const VERTICAL_BOUNDS_MAX_PIXELS: f32 = 450.0;
 
 const MAX_FOLLOW_SPEED: f32 = 256.0;
@@ -37,7 +37,14 @@ impl<'s> System<'s> for CameraFollowSystem {
 
   fn run(
     &mut self,
-    (mut transforms, actor_datas, local_players, active_camera, screen_dimensions, physics_time): Self::SystemData,
+    (
+      mut transforms,
+      actor_datas,
+      local_players,
+      active_camera,
+      screen_dimensions,
+      physics_time,
+    ): Self::SystemData,
   ) {
     let mut camera_translation = transforms
       .get(active_camera.0)
@@ -55,7 +62,7 @@ impl<'s> System<'s> for CameraFollowSystem {
       };
       (
         half_extent / VERTICAL_BOUNDS_DIRECTION_MODIFIER,
-        half_extent * (half_extent * VERTICAL_BOUNDS_DIRECTION_MODIFIER),
+        half_extent + (half_extent * VERTICAL_BOUNDS_DIRECTION_MODIFIER),
       )
     };
 
